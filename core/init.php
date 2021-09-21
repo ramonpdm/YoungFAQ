@@ -20,16 +20,18 @@ class database
                 throw new Exception('Ha habido un error en el sistema. Favor contacte a un administrador.');
             }
         } catch (Exception $e) {
-            $this->on = false;
-            echo '
-                <!-- POST -->
-                <div class="post">
-                    <div class="wrap-ut not-found">
-                        <div class="posttext">
-                            ' . $e->getMessage() . '
-                        </div>
-                    </div>
-                </div> <!-- POST -->';
+            $this->on = false; ?>
+
+                        <!-- Error -->
+                        <div class="post">
+                            <div class="wrap-ut not-found">
+                                <div class="posttext">
+                                    <?php echo $e->getMessage().PHP_EOL; ?>
+                                </div>
+                            </div>
+                        </div><!-- End Error -->
+
+<?php
         }
     }
 
@@ -89,7 +91,7 @@ class database
             $s = "SELECT name FROM users WHERE id = $id";
             $r = $this->mysqli->query($s);
             $user = mysqli_fetch_row($r);
-            if (!empty($user)){
+            if (!empty($user)) {
                 return '<i class="fa fa-user"></i> <span>' . $user[0] . '</span>';
             }
             return;
@@ -99,15 +101,17 @@ class database
     public function getUserPost($id = null)
     {
         if ($this->mysqli) {
-            if (isset($_SESSION['id_user'])){
+            if (isset($_SESSION['id_user'])) {
                 $s = "SELECT title FROM topics WHERE id_user = $id";
                 $r = $this->mysqli->query($s);
                 $user = mysqli_fetch_row($r);
-                if (!empty($user)){
+                if (!empty($user)) {
                     return '<a> <span>' . $user[0] . '</a>';
                 }
             }
-            return 'No estás logueado, <a data-toggle="modal" data-target="#loginModal">inicia sesión</a> o <a data-toggle="modal" data-target="#registerModal">regístrate</a>.';
+            return 'No estás logueado, <a data-toggle="modal" data-target="#loginModal">inicia sesión</a> o <a data-toggle="modal" data-target="#registerModal">regístrate</a>.'.PHP_EOL;
+        } else {
+            return '<div class="posttext">Ha habido un error en el sistema. Favor contacte a un administrador.</div>'.PHP_EOL;
         }
     }
 
