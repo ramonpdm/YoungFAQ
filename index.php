@@ -1,509 +1,199 @@
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Forum :: Home Page</title>
-
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom -->
-    <link href="css/custom.css" rel="stylesheet">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-          <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-          <![endif]-->
-
-    <!-- fonts -->
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="css/font-awesome.min.css">
-
-    <!-- CSS STYLE-->
-    <link rel="stylesheet" type="text/css" href="css/style.css" media="screen">
-
-    <!-- SLIDER REVOLUTION 4.x CSS SETTINGS -->
-    <link rel="stylesheet" type="text/css" href="css/settings.css" media="screen">
-
-</head>
-
-<body style="">
-
-    <div class="container-fluid">
-
-        <!-- Slider -->
-        <div class="tp-banner-container" style="overflow: visible;">
-
-        </div>
-        <!-- //Slider -->
-
-        <div class="headernav">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-1 col-xs-3 col-sm-2 col-md-2 logo "><a href="index.html"><img src="images/logo.jpg" alt=""></a></div>
-                    <div class="col-lg-3 col-xs-9 col-sm-5 col-md-3 selecttopic">
-                        <div class="dropdown">
-                            <a data-toggle="dropdown" href="#">Borderlands 2</a> <b class="caret"></b>
-                            <ul class="dropdown-menu" role="menu">
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Borderlands 1</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-2" href="#">Borderlands 2</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-3" href="#">Borderlands 3</a></li>
-
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 search hidden-xs hidden-sm col-md-3">
-                        <div class="wrap">
-                            <form action="#" method="post" class="form">
-                                <div class="pull-left txt"><input type="text" class="form-control" placeholder="Search Topics" control-id="ControlID-1"></div>
-                                <div class="pull-right"><button class="btn btn-default" type="button" control-id="ControlID-2"><i class="fa fa-search"></i></button></div>
-                                <div class="clearfix"></div>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-xs-12 col-sm-5 col-md-4 avt">
-                        <div class="stnt pull-left">
-                            <form action="03_new_topic.html" method="post" class="form">
-                                <button class="btn btn-primary" control-id="ControlID-3">Start New Topic</button>
-                            </form>
-                        </div>
-                        <div class="env pull-left"><i class="fa fa-envelope"></i></div>
-
-                        <div class="avatar pull-left dropdown">
-                            <a data-toggle="dropdown" href="#"><img src="images/avatar.jpg" alt=""></a> <b class="caret"></b>
-                            <div class="status green">&nbsp;</div>
-                            <ul class="dropdown-menu" role="menu">
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">My Profile</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-2" href="#">Inbox</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-3" href="#">Log Out</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-4" href="04_new_account.html">Create account</a></li>
-                            </ul>
-                        </div>
-
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+<?php   include 'core/init.php'; 
+        include 'require/header.php'; ?>
 
         <section class="content">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-xs-12 col-md-8">
-                        <div class="pull-left"><a href="#" class="prevnext"><i class="fa fa-angle-left"></i></a></div>
-                        <div class="pull-left">
-                            <ul class="paginationforum">
-                                <li class="hidden-xs"><a href="#">1</a></li>
-                                <li class="hidden-xs"><a href="#">2</a></li>
-                                <li class="hidden-xs"><a href="#">3</a></li>
-                                <li class="hidden-xs"><a href="#">4</a></li>
-                                <li><a href="#">5</a></li>
-                                <li><a href="#">6</a></li>
-                                <li><a href="#" class="active">7</a></li>
-                                <li><a href="#">8</a></li>
-                                <li class="hidden-xs"><a href="#">9</a></li>
-                                <li class="hidden-xs"><a href="#">10</a></li>
-                                <li class="hidden-xs hidden-md"><a href="#">11</a></li>
-                                <li class="hidden-xs hidden-md"><a href="#">12</a></li>
-                                <li class="hidden-xs hidden-sm hidden-md"><a href="#">13</a></li>
-                                <li><a href="#">1586</a></li>
-                            </ul>
-                        </div>
-                        <div class="pull-left"><a href="#" class="prevnext last"><i class="fa fa-angle-right"></i></a></div>
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
-            </div>
-
-
+            <br>
             <div class="container">
                 <div class="row">
                     <div class="col-lg-8 col-md-8">
-                        <!-- POST -->
-                        <div class="post">
-                            <div class="wrap-ut pull-left">
-                                <div class="userinfo pull-left">
-                                    <div class="avatar">
-                                        <img src="images/avatar.jpg" alt="">
-                                        <div class="status green">&nbsp;</div>
+<!-- Buttons -->
+                                <div class="btn-options row">
+                                    <div class="col-sm-2 col-xs-3">
+                                        <div class="postadd ">
+                                            <button class="btn btn-primary" control-id="ControlID-3" data-toggle="collapse" data-target="#newtopic">Crear tema</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-10 col-xs-9 search">
+                                        <div class="wrap">
+                                            <form action="#" method="post" class="form">
+                                                <div class="pull-left txt">
+                                                    <input type="text" class="form-control" placeholder="Buscar temas" control-id="ControlID-1">
+                                                </div>
+                                                <div class="pull-right">
+                                                    <button class="btn btn-default" type="button" control-id="ControlID-2" >
+                                                        <i class="fa fa-search"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </form>
+                                        </div>
                                     </div>
 
-                                    <div class="icons">
-                                        <img src="images/icon1.jpg" alt=""><img src="images/icon4.jpg" alt="">
+                                </div><!-- POST -->
+                                <div class="post collapse" id="newtopic">
+                                <form action="#" class="form newtopic" method="post">
+                                    <div class="topwrap">
+                                        <div class="userinfo pull-left">
+                                            <div class="avatar">
+                                                <img src="images/avatar4.jpg" alt="">
+                                            </div>
+
+                                            <div class="icons">
+                                                <img src="images/icon3.jpg" alt=""><img src="images/icon4.jpg" alt=""><img src="images/icon5.jpg" alt=""><img src="images/icon6.jpg" alt="">
+                                            </div>
+                                        </div>
+                                        <div class="posttext pull-left">
+
+                                            <div>
+                                                <input type="text" placeholder="Escribe el título del tema" name="title" class="form-control" control-id="ControlID-4">
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-12 col-md-12">
+                                                    <input placeholder="Elige una categoría..." list="categories" name="category" class="form-control" control-id="ControlID-5">
+                                                    <datalist id="categories">
+                                                        <option value="Anuncios">
+                                                        <option value="Programación">
+                                                        <option value="Educación">
+                                                    </datalist>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div>
+                                                        <textarea name="content" id="content" placeholder="Contenido" class="form-control" control-id="ControlID-7"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>                              
+                                    <div class="postinfobot">
+
+                                        <div class="notechbox pull-left">
+                                            <input type="checkbox" name="note" id="note" class="form-control" control-id="ControlID-13">
+                                        </div>
+
+                                        <div class="pull-left">
+                                            <label for="note"> Email me when some one post a reply</label>
+                                        </div>
+
+                                        <div class="pull-right postreply">
+                                            <div class="pull-left smile"><a href="#"><i class="fa fa-smile-o"></i></a></div>
+                                            <div class="pull-left"><button type="submit" class="btn btn-primary" control-id="ControlID-14">Post</button></div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+
+                                        <div class="clearfix"></div>
                                     </div>
-                                </div>
-                                <div class="posttext pull-left">
-                                    <h2><a href="02_topic.html">10 Kids Unaware of Their Halloween Costume</a></h2>
-                                    <p>It's one thing to subject yourself to a Halloween costume mishap because, hey, that's your prerogative.</p>
-                                </div>
-                                <div class="clearfix"></div>
+                                </form>
                             </div>
-                            <div class="postinfo pull-left">
-                                <div class="comments">
-                                    <div class="commentbg">
-                                        560
-                                        <div class="mark"></div>
-                                    </div>
+                        <?php
+                        $query = new database();
+                        $query->select("topics", "*");
+                        $result = $query->sql;
+                        if (mysqli_num_rows($result) > 0) {
+                            while ($row = mysqli_fetch_assoc($result)) {
+                        ?>
+                                
 
+                                <!-- POST -->
+                                <div class="post">
+                                    <div class="wrap-ut pull-left">
+                                        <div class="userinfo pull-left">
+                                            <div class="avatar">
+                                                <img src="images/avatar.jpg" alt="">
+                                                
+                                            </div>
+
+                                            <div class="icons">
+                                                <img src="images/icon1.jpg" alt=""><img src="images/icon4.jpg" alt="">
+                                            </div>
+                                        </div>
+                                        <div class="posttext pull-left">
+                                        <h2><a href="/topic/<?php echo $row['id']; ?>"><?php echo $row['title']; ?></a></h2>
+                                            <p><?php echo $row['content']; ?></p>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="postinfo pull-left hidden-xs ">
+                                        <div class="comments">
+                                            <div class="commentbg">
+                                            <?php echo $row['comments']; ?>
+                                                <div class="mark"></div>
+                                            </div>
+
+                                        </div>
+                                        <div class="views"><i class="fa fa-eye"></i> <?php echo $row['views']; ?></div>
+                                        <div class="time"><i class="fa fa-clock-o"></i><?php echo get_ago($row['date_created']); ?></div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div><!-- POST -->
+
+                            <?php
+                            }
+                        } else { ?>
+
+                            <div class="post">
+                                <div class="wrap-ut not-found">
+                                    <div class="posttext">
+                                        No hay temas ni discusiones para mostrar.
+                                    </div>
+                                    <div class="right">
+                                        <button class="btn btn-primary" control-id="ControlID-3">Crear tema</button>
+                                    </div>
                                 </div>
-                                <div class="views"><i class="fa fa-eye"></i> 1,568</div>
-                                <div class="time"><i class="fa fa-clock-o"></i> 24 min</div>
+
                             </div>
-                            <div class="clearfix"></div>
-                        </div><!-- POST -->
 
-
-                        <!-- POST -->
-                        <div class="post">
-                            <div class="wrap-ut pull-left">
-                                <div class="userinfo pull-left">
-                                    <div class="avatar">
-                                        <img src="images/avatar2.jpg" alt="">
-                                        <div class="status red">&nbsp;</div>
-                                    </div>
-
-                                    <div class="icons">
-                                        <img src="images/icon3.jpg" alt=""><img src="images/icon4.jpg" alt=""><img src="images/icon5.jpg" alt=""><img src="images/icon6.jpg" alt="">
-                                    </div>
-                                </div>
-                                <div class="posttext pull-left">
-                                    <h2><a href="02_topic.html">What Instagram Ads Will Look Like</a></h2>
-                                    <p>Instagram offered a first glimpse at what its ads will look like in a blog post Thursday. The sample ad, which you can see below.</p>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="postinfo pull-left">
-                                <div class="comments">
-                                    <div class="commentbg">
-                                        89
-                                        <div class="mark"></div>
-                                    </div>
-
-                                </div>
-                                <div class="views"><i class="fa fa-eye"></i> 1,568</div>
-                                <div class="time"><i class="fa fa-clock-o"></i> 15 min</div>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div><!-- POST -->
-
-
-                        <!-- POST -->
-                        <div class="post">
-                            <div class="wrap-ut pull-left">
-                                <div class="userinfo pull-left">
-                                    <div class="avatar">
-                                        <img src="images/avatar3.jpg" alt="">
-                                        <div class="status red">&nbsp;</div>
-                                    </div>
-
-                                    <div class="icons">
-                                        <img src="images/icon2.jpg" alt=""><img src="images/icon4.jpg" alt="">
-                                    </div>
-                                </div>
-                                <div class="posttext pull-left">
-                                    <h2><a href="02_topic.html">The Future of Magazines Is on Tablets</a></h2>
-                                    <p>Eric Schmidt has seen the future of magazines, and it's on the tablet. At a Magazine Publishers Association.</p>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="postinfo pull-left">
-                                <div class="comments">
-                                    <div class="commentbg">
-                                        456
-                                        <div class="mark"></div>
-                                    </div>
-
-                                </div>
-                                <div class="views"><i class="fa fa-eye"></i> 1,568</div>
-                                <div class="time"><i class="fa fa-clock-o"></i> 2 days</div>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div><!-- POST -->
-
-
-                        <!-- POST -->
-                        <div class="post">
-                            <div class="wrap-ut pull-left">
-                                <div class="userinfo pull-left">
-                                    <div class="avatar">
-                                        <img src="images/avatar4.jpg" alt="">
-                                        <div class="status yellow">&nbsp;</div>
-                                    </div>
-
-                                    <div class="icons">
-                                        <img src="images/icon1.jpg" alt=""><img src="images/icon4.jpg" alt=""><img src="images/icon6.jpg" alt="">
-                                    </div>
-                                </div>
-                                <div class="posttext pull-left">
-                                    <h2><a href="02_topic.html">Pinterest Now Worth $3.8 Billion</a></h2>
-                                    <p>Pinterest's valuation is closing in on $4 billion after its latest funding round of $225 million, according to a report.</p>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="postinfo pull-left">
-                                <div class="comments">
-                                    <div class="commentbg">
-                                        78
-                                        <div class="mark"></div>
-                                    </div>
-
-                                </div>
-                                <div class="views"><i class="fa fa-eye"></i> 1,568</div>
-                                <div class="time"><i class="fa fa-clock-o"></i> 24 min</div>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div><!-- POST -->
-
-
-
-                        <!-- POST -->
-                        <div class="post">
-                            <div class="wrap-ut pull-left">
-                                <div class="userinfo pull-left">
-                                    <div class="avatar">
-                                        <img src="images/avatar.jpg" alt="">
-                                        <div class="status green">&nbsp;</div>
-                                    </div>
-
-                                    <div class="icons">
-                                        <img src="images/icon1.jpg" alt=""><img src="images/icon4.jpg" alt="">
-                                    </div>
-                                </div>
-                                <div class="posttext pull-left">
-                                    <h2><a href="02_topic.html">10 Kids Unaware of Their Halloween Costume</a></h2>
-                                    <p>It's one thing to subject yourself to a Halloween costume mishap because, hey, that's your prerogative.</p>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="postinfo pull-left">
-                                <div class="comments">
-                                    <div class="commentbg">
-                                        560
-                                        <div class="mark"></div>
-                                    </div>
-
-                                </div>
-                                <div class="views"><i class="fa fa-eye"></i> 1,568</div>
-                                <div class="time"><i class="fa fa-clock-o"></i> 24 min</div>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div><!-- POST -->
-
-
-                        <!-- POST -->
-                        <div class="post">
-                            <div class="wrap-ut pull-left">
-                                <div class="userinfo pull-left">
-                                    <div class="avatar">
-                                        <img src="images/avatar2.jpg" alt="">
-                                        <div class="status red">&nbsp;</div>
-                                    </div>
-
-                                    <div class="icons">
-                                        <img src="images/icon3.jpg" alt=""><img src="images/icon4.jpg" alt=""><img src="images/icon5.jpg" alt=""><img src="images/icon6.jpg" alt="">
-                                    </div>
-                                </div>
-                                <div class="posttext pull-left">
-                                    <h2><a href="02_topic.html">What Instagram Ads Will Look Like</a></h2>
-                                    <p>Instagram offered a first glimpse at what its ads will look like in a blog post Thursday. The sample ad, which you can see below.</p>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="postinfo pull-left">
-                                <div class="comments">
-                                    <div class="commentbg">
-                                        89
-                                        <div class="mark"></div>
-                                    </div>
-
-                                </div>
-                                <div class="views"><i class="fa fa-eye"></i> 1,568</div>
-                                <div class="time"><i class="fa fa-clock-o"></i> 15 min</div>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div><!-- POST -->
-
-
-                        <!-- POST -->
-                        <div class="post">
-                            <div class="wrap-ut pull-left">
-                                <div class="userinfo pull-left">
-                                    <div class="avatar">
-                                        <img src="images/avatar3.jpg" alt="">
-                                        <div class="status red">&nbsp;</div>
-                                    </div>
-
-                                    <div class="icons">
-                                        <img src="images/icon2.jpg" alt=""><img src="images/icon4.jpg" alt="">
-                                    </div>
-                                </div>
-                                <div class="posttext pull-left">
-                                    <h2><a href="02_topic.html">The Future of Magazines Is on Tablets</a></h2>
-                                    <p>Eric Schmidt has seen the future of magazines, and it's on the tablet. At a Magazine Publishers Association.</p>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="postinfo pull-left">
-                                <div class="comments">
-                                    <div class="commentbg">
-                                        456
-                                        <div class="mark"></div>
-                                    </div>
-
-                                </div>
-                                <div class="views"><i class="fa fa-eye"></i> 1,568</div>
-                                <div class="time"><i class="fa fa-clock-o"></i> 2 days</div>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div><!-- POST -->
-
+                        <?php } ?>
                     </div>
                     <div class="col-lg-4 col-md-4">
-
+                    <?php
+                        $query = new database();
+                        $query->select("categories", "*");
+                        $result = $query->sql;
+                        if (mysqli_num_rows($result) > 0) {
+                            
+                        ?>
                         <!-- -->
                         <div class="sidebarblock">
-                            <h3>Categories</h3>
+                            <h3>Categorías</h3>
                             <div class="divline"></div>
                             <div class="blocktxt">
                                 <ul class="cats">
-                                    <li><a href="#">Trading for Money <span class="badge pull-right">20</span></a></li>
-                                    <li><a href="#">Vault Keys Giveway <span class="badge pull-right">10</span></a></li>
-                                    <li><a href="#">Misc Guns Locations <span class="badge pull-right">50</span></a></li>
-                                    <li><a href="#">Looking for Players <span class="badge pull-right">36</span></a></li>
-                                    <li><a href="#">Stupid Bugs &amp; Solves <span class="badge pull-right">41</span></a></li>
-                                    <li><a href="#">Video &amp; Audio Drivers <span class="badge pull-right">11</span></a></li>
-                                    <li><a href="#">2K Official Forums <span class="badge pull-right">5</span></a></li>
+                                    <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+                                    <li><a href="/category/<?php echo $row['slug']; ?>"><?php echo $row['name']; ?><span class="badge pull-right"><?php echo $row['count']; ?></span></a></li>
+                                    <?php } ?>
                                 </ul>
                             </div>
                         </div>
+                        <?php } ?>
 
                         <!-- -->
                         <div class="sidebarblock">
-                            <h3>Poll of the Week</h3>
-                            <div class="divline"></div>
-                            <div class="blocktxt">
-                                <p>Which game you are playing this week?</p>
-                                <form action="#" method="post" class="form">
-                                    <table class="poll">
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div class="progress">
-                                                        <div class="progress-bar color1" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 90%">
-                                                            Call of Duty Ghosts
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="chbox">
-                                                    <input id="opt1" type="radio" name="opt" value="1">
-                                                    <label for="opt1"></label>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="progress">
-                                                        <div class="progress-bar color2" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 63%">
-                                                            Titanfall
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="chbox">
-                                                    <input id="opt2" type="radio" name="opt" value="2" checked="">
-                                                    <label for="opt2"></label>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="progress">
-                                                        <div class="progress-bar color3" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 75%">
-                                                            Battlefield 4
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="chbox">
-                                                    <input id="opt3" type="radio" name="opt" value="3">
-                                                    <label for="opt3"></label>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </form>
-                                <p class="smal">Voting ends on 19th of October</p>
-                            </div>
-                        </div>
-
-                        <!-- -->
-                        <div class="sidebarblock">
-                            <h3>My Active Threads</h3>
+                            <h3>Mis Publicaciones</h3>
                             <div class="divline"></div>
                             <div class="blocktxt">
                                 <a href="#">This Dock Turns Your iPhone Into a Bedside Lamp</a>
                             </div>
-                            <div class="divline"></div>
-                            <div class="blocktxt">
-                                <a href="#">Who Wins in the Battle for Power on the Internet?</a>
-                            </div>
-                            <div class="divline"></div>
-                            <div class="blocktxt">
-                                <a href="#">Sony QX10: A Funky, Overpriced Lens Camera for Your Smartphone</a>
-                            </div>
-                            <div class="divline"></div>
-                            <div class="blocktxt">
-                                <a href="#">FedEx Simplifies Shipping for Small Businesses</a>
-                            </div>
-                            <div class="divline"></div>
-                            <div class="blocktxt">
-                                <a href="#">Loud and Brave: Saudi Women Set to Protest Driving Ban</a>
-                            </div>
                         </div>
 
 
                     </div>
                 </div>
             </div>
-
-
-
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-xs-12">
-                        <div class="pull-left"><a href="#" class="prevnext"><i class="fa fa-angle-left"></i></a></div>
-                        <div class="pull-left">
-                            <ul class="paginationforum">
-                                <li class="hidden-xs"><a href="#">1</a></li>
-                                <li class="hidden-xs"><a href="#">2</a></li>
-                                <li class="hidden-xs"><a href="#">3</a></li>
-                                <li class="hidden-xs"><a href="#">4</a></li>
-                                <li><a href="#">5</a></li>
-                                <li><a href="#">6</a></li>
-                                <li><a href="#" class="active">7</a></li>
-                                <li><a href="#">8</a></li>
-                                <li class="hidden-xs"><a href="#">9</a></li>
-                                <li class="hidden-xs"><a href="#">10</a></li>
-                                <li class="hidden-xs hidden-md"><a href="#">11</a></li>
-                                <li class="hidden-xs hidden-md"><a href="#">12</a></li>
-                                <li class="hidden-xs hidden-sm hidden-md"><a href="#">13</a></li>
-                                <li><a href="#">1586</a></li>
-                            </ul>
-                        </div>
-                        <div class="pull-left"><a href="#" class="prevnext last"><i class="fa fa-angle-right"></i></a></div>
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
-            </div>
-
 
         </section>
 
         <footer>
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-1 col-xs-3 col-sm-2 logo "><a href="#"><img src="images/logo.jpg" alt=""></a></div>
-                    <div class="col-lg-8 col-xs-9 col-sm-5 ">Copyrights 2014, websitename.com</div>
+                    <div class="col-lg-1 col-xs-3 col-sm-2 logo "><a href="#"><img src="images/logo.png" alt=""></a></div>
+                    <div class="col-lg-8 col-xs-9 col-sm-5 ">Copyrights 2021 YoungFAQ</div>
                     <div class="col-lg-3 col-xs-12 col-sm-5 sociconcent">
                         <ul class="socialicons">
                             <li><a href="#"><i class="fa fa-facebook-square"></i></a></li>
@@ -520,32 +210,12 @@
     </div>
 
     <!-- get jQuery from the google apis -->
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.js"></script>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
     <!-- SLIDER REVOLUTION 4.x SCRIPTS  -->
     <script type="text/javascript" src="js/jquery.themepunch.plugins.min.js"></script>
     <script type="text/javascript" src="js/jquery.themepunch.revolution.min.js"></script>
-
-    <script src="js/bootstrap.min.js"></script>
-
-
-    <!-- LOOK THE DOCUMENTATION FOR MORE INFORMATIONS -->
-    <script type="text/javascript">
-        var revapi;
-
-        jQuery(document).ready(function() {
-            "use strict";
-            revapi = jQuery('.tp-banner').revolution({
-                delay: 15000,
-                startwidth: 1200,
-                startheight: 278,
-                hideThumbs: 10,
-                fullWidth: "on"
-            });
-
-        }); //ready
-    </script>
 
     <!-- END REVOLUTION SLIDER -->
 

@@ -39,6 +39,8 @@ body {
     font-family: 'Open Sans Light', sans-serif;
     font-size: 14px;
     color: #989c9e;
+    background-color: #ecf0f1;
+    padding-bottom: 69px;;
 }
 
 a {
@@ -48,13 +50,25 @@ a:hover {
     color: #989c9e;    
 }
 
+hr{
+    border-color: #ddd;
+}
+
+button {
+    outline: none !important;
+}
+
 /*-----------------------------------------------------------------*/
 /*--- Footer ---*/
 
 footer {
+    position: fixed;
+    bottom: 0;
     height: 69px;
+    width: 100%;    
     line-height: 69px;
     color: #363838;
+    background-color:white;
 }
 
 footer .logo {
@@ -85,11 +99,13 @@ ul.socialicons li a:hover {
 .headernav {
     height: 70px;
     border-bottom: 1px solid #c9cccd;
+    background-color: white;
 }
 
 
 .content {
-    background-color: #ecf0f1;
+
+    
     border-top: solid 1px #e0e4e5;
 }
 
@@ -107,6 +123,8 @@ ul.socialicons li a:hover {
 .selecttopic .dropdown-menu {
     margin-top: -20px;
 }
+
+
 
 .headernav .search {
     color: #363838;
@@ -133,11 +151,10 @@ ul.socialicons li a:hover {
     font-size: 14px;
     padding: 8px 19px;
     height: 38px;
-
 }
 
-
 .headernav .search button {
+    height: 100%;
     border: solid 1px #697683;
     box-shadow: none;
     background-color: #697683;
@@ -180,6 +197,10 @@ ul.socialicons li a:hover {
     color:#cfd5d7;
     line-height: 38px;
     padding: 0 20px;
+    
+    height: 100%;
+    display: flex;
+    align-items: center;
 }
 
 .avatar {
@@ -418,22 +439,35 @@ td.chbox {
 }
 
 
+
 /*--- Post --*/
+
 .post {
     background-color: #ffffff;
 
     border-radius: 2px;
     box-shadow: 0 1px 2px #c9cccd;
     margin-bottom: 20px;
+    
 }
 
 .post .wrap-ut {
     width: 85%;
+   
 }
 
 .post .userinfo {
     width: 15%;
     padding: 20px 0 15px 15px;
+}
+
+.post .wrap-ut.not-found{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 .post .posttext {
@@ -597,8 +631,11 @@ td.chbox {
 }
 
 .postinfobot .next {
-    width: 90px;
+    height: 50px;
+    /* width: 90px; */
     text-align: right;
+    display: flex;
+    align-items: center;
 }
 
 .postinfobot .next a {
@@ -608,6 +645,10 @@ td.chbox {
 
 .postinfobot .next a i {
     padding-right: 18px;
+}
+
+.postinfobot .postreply {
+    padding: 10px 0px 10px 0px;
 }
 
 .up {
@@ -658,12 +699,16 @@ a.down:hover {
     font-family: 'Open Sans Regular', sans-serif; 
 }
 
+
+
 .textwraper textarea {
     border: none;
     box-shadow: none;
     background-color: #f1f1f1;
-    /*    width: 610px;*/
-    width: 100%;
+    width: 100%; 
+    max-width: 100%;
+    outline: none;
+    
 }
 
 .textwraper {
@@ -973,253 +1018,44 @@ a.down:hover {
 }
 
 
-/*-----------------------------------------------------------------*/
-/*--- Extra small devices (less 767px) ---*/
-
-@media (max-width: 767px) {
-    
-    /*--- index.html ---*/
-    .container-fluid {
-        padding: 0;
-    }
-
-    .post .userinfo {
-        width: 30%;
-        padding: 15px 0 15px 15px;
-    }
-
-    .post .posttext {
-        width: 70%;
-        padding-right: 15px;
-        padding-top: 15px;
-        padding-bottom: 15px;
-    }
-
-    .post .comments .commentbg {
-        font-size: 12px;
-        padding: 7px;
-        min-width: 35px;
-    }
-    .post .time i {
-        display: block;
-        margin-top: 5px;
-    }
-
-    .post .views i {
-        display: block;
-        margin-top: 5px;
-    }
-
-    .post .comments .commentbg .mark {
-        left: 36%;
-    }
-
-    .post .time,
-    .post .views,
-    .post .views {
-    }
 
 
-    .headernav {
-        height: auto;
-    }
-
-    .avt {
-        height: auto; 
-        margin-bottom: 15px;
-    }
-
-    .selecttopic select {
-        width: 100%;
-    }
-
-    .avatar .dropdown-menu {
-        left: auto;
-        right: 0;
-    }
-
-    .selecttopic .dropdown-menu {
-        margin-top: -20px;
-    }
-
-    .dropdown.avatar .status {
-        right: 14px;
-    }
-
-    .dropdown.avatar b.caret {
-        color: #363838;
-    }
-
-    .sociconcent {
-        text-align: center;
-    }
-
-    /*--- 02_topic.html ---*/
-
-    .postinfobot {
-        padding: 10px;
-    }
-
-    .postinfobot .likeblock {
-        width: 100%;
-    }
-
-    .postinfobot .posted {
-        width: 200px;
-        margin: 0;
-    }
-
-    .postinfobot .next {
-        width: 76px;
-        margin: 0;
-    }
-
-    .textwraper textarea {
-        width: 175px;
-    }
-
-    footer ul.socialicons {
-        margin: 0;
-        padding: 0;
-    }
-    /* end 2*/
-
-    /*--- 03_new_topic.html ---*/
-    #pass {
-        margin-bottom: 20px;
-    }
-
-    .accsection .htext, 
-    .accsection .hnotice {
-        width: 100%;
-    }
-
-    .accsection .hnotice {
-        font-size: 10px;
-    }
-
-    .postinfobot .lblfch {
-        width: 80%;
-    }
-    .postinfobot .lblfch label {
-        line-height: normal;
-        padding-top: 15px;
-        padding-bottom: 15px;
-
-    }
-    /* end 3 */
+.btn-options .postadd button{
+    height: 38px;
 }
 
-
-/*-----------------------------------------------------------------*/
-/*--- Small devices (768 - 991px) ---*/
-
-@media (min-width: 768px) and (max-width: 991px) {
-
-    .container-fluid {
-        padding: 0;
-    }
-
-    .post .userinfo {
-        width: 15%;
-        padding: 15px 0 15px 15px;
-    }
-
-    .post .posttext {
-        width: 85%;
-        padding-right: 15px;
-        padding-top: 15px;
-        padding-bottom: 15px;
-    }
-
-    .post .comments .commentbg {
-        font-size: 12px;
-        padding: 7px;
-        min-width: 35px;
-    }
-    .post .time i {
-        display: block;
-        margin-top: 5px;
-    }
-
-    .post .views i {
-        display: block;
-        margin-top: 5px;
-    }
-
-    .post .comments .commentbg .mark {
-        left: 36%;
-    }
-
-    .headernav {
-        height: auto;
-    }
-
-    .avt {
-        height: auto; 
-        margin-bottom: 15px;
-    }
-
-    .selecttopic select {
-        width: 100%;
-    }
-
-    .avatar .dropdown-menu {
-        left: auto;
-        right: 0;
-    }
-
-    .selecttopic .dropdown-menu {
-        margin-top: -20px;
-    }
-
-    .dropdown.avatar .status {
-        right: 14px;
-    }
-
-    .dropdown.avatar b.caret {
-        color: #363838;
-    }
-    
+.btn-options .search {
+    color: #363838;
+    font-size: 14px;
+    font-family: 'Open Sans Light', sans-serif;
+    /* margin-top: 16px; */
+    /* height: 38px */
 }
 
-
-/*-----------------------------------------------------------------*/
-/*--- Medium devices (992-1200px) ---*/
-@media (min-width: 992px) and (max-width: 1200px) {
-    .container-fluid {
-        padding: 0;
-    }
-
-    .headernav .search .txt {
-        width: 75%;
-    }
-
-    .avatar .dropdown-menu {
-        left: auto;
-        right: 0;
-    }
-    ul.socialicons {
-        margin-bottom: 0;
-    }
-
-    /* 2 */
-    .textwraper textarea {
-
-        width: 100%;
-    }
-    /* end 2 */
+.btn-options .search  .wrap {
+    background-color: #ffffff;
+    border-radius: 3px;
 }
 
+.btn-options .search .txt {
+    width: 85%;
+}
 
-/*-----------------------------------------------------------------*/
-/*--- Large devices (more 1200px) ---*/
-@media (min-width: 1201px) {
-    .container-fluid {
-        padding: 0;
-    }
+.btn-options .search input {
+    border: none;
+    box-shadow: none;
+    background-color: #ffffff;
+    color: gray;
+    font-size: 14px;
+    padding: 8px 19px;
+    height: 38px;
+}
 
-    .container {
-        padding: 0;
-    }
+.btn-options .search button {
+    height: 38px;
+    border: solid 1px #697683;
+    box-shadow: none;
+    background-color: #697683;
+    color: #ffffff;
+    font-size: 18px;
 }
