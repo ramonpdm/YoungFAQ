@@ -44,10 +44,14 @@ body {
 }
 
 a {
-    color: #363838;    
+    /* color: #363838;     */
+    color: var(--thm-base);
+    text-decoration: none;
+    cursor: pointer;
 }
 a:hover {
     color: #989c9e;    
+    text-decoration: none;
 }
 
 hr{
@@ -547,10 +551,13 @@ td.chbox {
     font-family: 'Open Sans Regular', sans-serif; 
     text-align: center;
     line-height: 29px;
+    padding-top: 15px;
+    padding-bottom: 15px;
 }
 
 .post .views i {
     font-size: 14px;
+    display: block;
 }
 
 .post .time {
@@ -559,11 +566,13 @@ td.chbox {
     font-family: 'Open Sans Regular', sans-serif; 
     text-align: center;
     line-height: 29px;
-
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .post .time i {
     font-size: 14px;
+    display: block;
 }
 
 
@@ -616,12 +625,20 @@ td.chbox {
     color: #bdc3c7;
 }
 
+
 .postinfobot .posted {
+    display: flex;
+    align-items: center;
+
     width: 300px;
     margin-left: 18px;
     font-size: 12px;
     color: #bdc3c7;
     font-family: 'Open Sans Regular', sans-serif; 
+}
+
+.postinfobot .posted span{
+    padding-right: 8px;
 }
 
 .postinfobot .posted i {

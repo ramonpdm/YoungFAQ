@@ -1,45 +1,49 @@
-<?php   include 'core/init.php'; 
-$topic_id = $_GET['id'];
-if (isset($topic_id)){
-        include 'require/header.php'; ?>
+<?php include 'core/init.php';
 
-        <section class="content">
-            <br>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-md-8">
+if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+    $topic_id = $_GET['id'];
+    include 'require/header.php'; ?>
 
-                        <?php
-                        $query = new database();
-                        $query->select("topics", "*", "id = $topic_id");
-                        $result = $query->sql;
-                        if (mysqli_num_rows($result) > 0) {
-                            while ($row = mysqli_fetch_assoc($result)) {
-                        ?>
+    <section class="content">
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-8">
+
+                    <?php
+                    $conn = new database();
+                    $conn->select("topics", "id, id_user, title, content, date_created, status", "id = $topic_id and status = 'published'");
+                    if ($conn->on) {
+                        $result = $conn->sql;
+                        $row = mysqli_fetch_row($result);
+                        if (!empty($row)) {
+                            $user_id = $row['1'];
+                    ?>
                             <div class="post">
                                 <div class="topwrap">
                                     <div class="userinfo pull-left">
                                         <div class="avatar">
-                                            <img src="/images/avatar.jpg" alt="">
+                                            <img src="/assets/images/avatar.jpg" alt="">
                                         </div>
 
                                         <div class="icons">
-                                            <img src="/images/icon1.jpg" alt=""><img src="/images/icon4.jpg" alt=""><img src="/images/icon5.jpg" alt=""><img src="/images/icon6.jpg" alt="">
+                                            <img src="/assets/images/icon1.jpg" alt=""><img src="/assets/images/icon4.jpg" alt=""><img src="/assets/images/icon5.jpg" alt=""><img src="/assets/images/icon6.jpg" alt="">
                                         </div>
                                     </div>
                                     <div class="posttext pull-left">
-                                        <h2><?php echo $row['title']; ?></h2>
-                                        <p><?php echo $row['content']; ?></p>
+                                        <h2><?php echo $row['2']; ?></h2>
+                                        <p><?php echo $row['3']; ?></p>
                                     </div>
                                     <div class="clearfix"></div>
-                                </div>                              
+                                </div>
                                 <div class="postinfobot">
 
-                                    <div class="posted pull-left"><i class="fa fa-clock-o"></i> 
-                                    Publicado el: <?php echo date('d M Y @ h:m A', strtotime($row['date_created'])); ?>
-                                </div>
+                                    <div class="posted pull-left">
+                                        <?php echo $conn->getUser($user_id); ?>
+                                        <i class="fa fa-clock-o"></i><span><?php echo date('d M Y @ h:m A', strtotime($row['4'])); ?></span>
+                                    </div>
 
-                                    <div class="next pull-right">                                        
+                                    <div class="next pull-right">
                                         <a href="#"><i class="fa fa-share"></i></a>
                                     </div>
 
@@ -48,186 +52,161 @@ if (isset($topic_id)){
                             </div>
                             <hr>
                             <?php
-                            }
-                        } else { ?>
-
-                            <div class="post">
-                                <div class="wrap-ut not-found">
-                                    <div class="posttext">
-                                        No hay temas ni discusiones para mostrar.
-                                    </div>
-                                    <div class="right">
-                                        <button class="btn btn-primary" control-id="ControlID-3">Crear tema</button>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                        <?php } ?>
-
-                        <?php
-                        $query = new database();
-                        $query->select("comments", "*", "id_topic = $topic_id");
-                        $result = $query->sql;
-                        if (mysqli_num_rows($result) > 0) {
-                            while ($row = mysqli_fetch_assoc($result)) {
-                        ?>
-                            <div class="post">
-                                <div class="topwrap">
-                                    <div class="userinfo pull-left">
-                                        <div class="avatar">
-                                            <img src="/images/avatar.jpg" alt="">
-                                        </div>
-
-                                        <div class="icons">
-                                            <img src="/images/icon1.jpg" alt=""><img src="/images/icon4.jpg" alt=""><img src="/images/icon5.jpg" alt=""><img src="/images/icon6.jpg" alt="">
-                                        </div>
-                                    </div>
-                                    <div class="posttext pull-left">
-                                        <p><?php echo $row['content']; ?></p>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>                              
-                                <div class="postinfobot">
-
-                                    <div class="posted pull-left"><i class="fa fa-clock-o"></i> 
-                                    Publicado el: <?php echo date('d M Y @ h:m A', strtotime($row['date_created'])); ?>
-                                </div>
-
-                                    <div class="next pull-right">                                        
-                                        <a href="#"><i class="fa fa-share"></i></a>
-                                    </div>
-
-                                    <div class="clearfix"></div>
-                                </div>
-                            </div>
-                            <hr>
-                            <?php
-                            }
-                        }?>
-
-                        <div class="post">
-                                <form action="#" class="form" method="post">
+                            $topic_id = $row['0'];
+                            $conn = new database();
+                            $conn->select("comments", "id_user, content, date_created, status", "id_topic = $topic_id and status = 'published'");
+                            $result = $conn->sql;
+                            if (mysqli_num_rows($result) > 0) {
+                                $row = mysqli_fetch_row($result);
+                            ?>
+                                <div class="post">
                                     <div class="topwrap">
                                         <div class="userinfo pull-left">
                                             <div class="avatar">
-                                                <img src="/images/avatar4.jpg" alt="">
+                                                <img src="/assets/images/avatar.jpg" alt="">
                                             </div>
 
                                             <div class="icons">
-                                                <img src="/images/icon3.jpg" alt=""><img src="/images/icon4.jpg" alt=""><img src="/images/icon5.jpg" alt=""><img src="/images/icon6.jpg" alt="">
+                                                <img src="/assets/images/icon1.jpg" alt=""><img src="/assets/images/icon4.jpg" alt=""><img src="/assets/images/icon5.jpg" alt=""><img src="/assets/images/icon6.jpg" alt="">
                                             </div>
                                         </div>
                                         <div class="posttext pull-left">
-                                            <div class="textwraper">
-                                                <div class="postreply">Publica una respuesta</div>
-                                                <textarea name="reply" id="reply" placeholder="Escribe tu comentario aquí..." control-id="ControlID-4"></textarea>
-                                            </div>
+                                            <p><?php echo $row['1']; ?></p>
                                         </div>
                                         <div class="clearfix"></div>
-                                    </div>                              
+                                    </div>
                                     <div class="postinfobot">
 
-                                        <div class="pull-right postreply">
-                                            <div class="pull-left"><button type="submit" class="btn btn-primary" control-id="ControlID-6">Enviar</button></div>
+                                        <div class="posted pull-left">
+                                        <?php echo $conn->getUser($row['0']); ?>
+                                        <i class="fa fa-clock-o"></i><span><?php echo date('d M Y @ h:m A', strtotime($row['2'])); ?></span>
+                                    </div>
+
+                                        <div class="next pull-right">
+                                            <a href="#"><i class="fa fa-share"></i></a>
+                                        </div>
+
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                                <hr>
+
+                                <div class="post">
+                                    <form action="#" class="form" method="post">
+                                        <div class="topwrap">
+                                            <div class="userinfo pull-left">
+                                                <div class="avatar">
+                                                    <img src="/assets/images/avatar4.jpg" alt="">
+                                                </div>
+
+                                                <div class="icons">
+                                                    <img src="/assets/images/icon3.jpg" alt=""><img src="/assets/images/icon4.jpg" alt=""><img src="/assets/images/icon5.jpg" alt=""><img src="/assets/images/icon6.jpg" alt="">
+                                                </div>
+                                            </div>
+                                            <div class="posttext pull-left">
+                                                <div class="textwraper">
+                                                    <div class="postreply">Publica una respuesta</div>
+                                                    <textarea name="reply" id="reply" placeholder="Escribe tu comentario aquí..." control-id="ControlID-4"></textarea>
+                                                </div>
+                                            </div>
                                             <div class="clearfix"></div>
                                         </div>
+                                        <div class="postinfobot">
+
+                                            <div class="pull-right postreply">
+                                                <div class="pull-left"><button type="submit" class="btn btn-primary" control-id="ControlID-6">Enviar</button></div>
+                                                <div class="clearfix"></div>
+                                            </div>
+
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </form>
+                                </div>
+                            <?php
+                            }
+                        } else { ?>
+                            <!-- POST -->
+                            <div class="post">
+                                <div class="wrap-ut not-found">
+                                    <div class="posttext">
+                                        El tema o la discusión que estás buscando no existe o no ha sido aprobado.
+                                    </div>
+                                    <div class="right">
+                                        <button class="btn btn-primary" control-id="ControlID-3" data-toggle="collapse" data-target="#newtopic">Crear tema</button>
+                                    </div>
+                                </div>
+                            </div><!-- POST -->
+
+                            <div class="post collapse" id="newtopic">
+                                <form action="#" class="form newtopic" method="post">
+                                    <div class="topwrap">
+                                        <div class="userinfo pull-left">
+                                            <div class="avatar">
+                                                <img src="/assets/images/avatar4.jpg" alt="">
+                                            </div>
+
+                                            <div class="icons">
+                                                <img src="/assets/images/icon3.jpg" alt=""><img src="/assets/images/icon4.jpg" alt=""><img src="/assets/images/icon5.jpg" alt=""><img src="/assets/images/icon6.jpg" alt="">
+                                            </div>
+                                        </div>
+                                        <div class="posttext pull-left">
+
+                                            <div>
+                                                <input type="text" placeholder="Escribe el título del tema" name="title" class="form-control" control-id="ControlID-4">
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-12 col-md-12">
+                                                    <input placeholder="Elige una categoría..." list="categories" name="category" class="form-control" control-id="ControlID-5">
+                                                    <datalist id="categories">
+                                                        <option value="Anuncios">
+                                                        <option value="Programación">
+                                                        <option value="Educación">
+                                                    </datalist>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div>
+                                                        <textarea name="content" id="content" placeholder="Contenido" class="form-control" control-id="ControlID-7"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="postinfobot">
+
+                                        <div class="notechbox pull-left">
+                                            <input type="checkbox" name="note" id="note" class="form-control" control-id="ControlID-13">
+                                        </div>
+
+                                        <div class="pull-left">
+                                            <label for="note"> Email me when some one post a reply</label>
+                                        </div>
+
+                                        <div class="pull-right postreply">
+                                            <div class="pull-left smile"><a href="#"><i class="fa fa-smile-o"></i></a></div>
+                                            <div class="pull-left"><button type="submit" class="btn btn-primary" control-id="ControlID-14">Post</button></div>
+                                            <div class="clearfix"></div>
+                                        </div>
+
 
                                         <div class="clearfix"></div>
                                     </div>
                                 </form>
                             </div>
-
-                    </div>
-                    <div class="col-lg-4 col-md-4">
                     <?php
-                        $query = new database();
-                        $query->select("categories", "*");
-                        $result = $query->sql;
-                        if (mysqli_num_rows($result) > 0) {
-                            
-                        ?>
-                        <!-- -->
-                        <div class="sidebarblock">
-                            <h3>Categorías</h3>
-                            <div class="divline"></div>
-                            <div class="blocktxt">
-                                <ul class="cats">
-                                    <?php while ($row = mysqli_fetch_assoc($result)) { ?>
-                                    <li><a href="/category/<?php echo $row['slug']; ?>"><?php echo $row['name']; ?><span class="badge pull-right"><?php echo $row['count']; ?></span></a></li>
-                                    <?php } ?>
-                                </ul>
-                            </div>
-                        </div>
-                        <?php } ?>
+                        }
+                    } ?>
 
-                        <!-- -->
-                        <div class="sidebarblock">
-                            <h3>Mis Publicaciones</h3>
-                            <div class="divline"></div>
-                            <div class="blocktxt">
-                                <a href="#">This Dock Turns Your iPhone Into a Bedside Lamp</a>
-                            </div>
-                        </div>
-
-
-                    </div>
                 </div>
+                <?php include('require/sidebar.php'); ?>
             </div>
+        </div>
 
-        </section>
-
-        <footer>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-1 col-xs-3 col-sm-2 logo "><a href="#"><img src="/images/logo.png" alt=""></a></div>
-                    <div class="col-lg-8 col-xs-9 col-sm-5 ">Copyrights 2021 YoungFAQ</div>
-                    <div class="col-lg-3 col-xs-12 col-sm-5 sociconcent">
-                        <ul class="socialicons">
-                            <li><a href="#"><i class="fa fa-facebook-square"></i></a></li>
-                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                            <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                            <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-                            <li><a href="#"><i class="fa fa-cloud"></i></a></li>
-                            <li><a href="#"><i class="fa fa-rss"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </footer>
-    </div>
-
-    <!-- get jQuery from the google apis -->
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.js"></script>
-
-
-    <!-- SLIDER REVOLUTION 4.x SCRIPTS  -->
-    <script type="text/javascript" src="/js/jquery.themepunch.plugins.min.js"></script>
-    <script type="text/javascript" src="/js/jquery.themepunch.revolution.min.js"></script>
-
-    <script src="/js/bootstrap.min.js"></script>
-
-
-    <!-- LOOK THE DOCUMENTATION FOR MORE INFORMATIONS -->
-    <script type="text/javascript">
-        var revapi;
-
-        jQuery(document).ready(function() {
-            "use strict";
-            revapi = jQuery('.tp-banner').revolution({
-                delay: 15000,
-                startwidth: 1200,
-                startheight: 278,
-                hideThumbs: 10,
-                fullWidth: "on"
-            });
-
-        }); //ready
-    </script>
-
-    <!-- END REVOLUTION SLIDER -->
-
-</body>
-
-</html>
-<?php } ?>
+    </section>
+<?php include('require/footer.php');
+} ?>
