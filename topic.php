@@ -1,4 +1,6 @@
-<?php include 'core/init.php';
+<?php 
+
+include 'core/init.php';
 
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     $topic_id = $_GET['id'];
@@ -11,7 +13,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                 <div class="col-lg-8 col-md-8">
 
                     <?php
-                    $conn = new database();
+                    $conn = new dbLink();
                     $conn->select("topics", "id, id_user, title, content, date_created, status", "id = $topic_id and status = 'published'");
                     if ($conn->on) {
                         $result = $conn->sql;
@@ -23,11 +25,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                                 <div class="topwrap">
                                     <div class="userinfo pull-left">
                                         <div class="avatar">
-                                            <img src="/assets/images/avatar.jpg" alt="">
-                                        </div>
-
-                                        <div class="icons">
-                                            <img src="/assets/images/icon1.jpg" alt=""><img src="/assets/images/icon4.jpg" alt=""><img src="/assets/images/icon5.jpg" alt=""><img src="/assets/images/icon6.jpg" alt="">
+                                            <img src="/assets/images/avatar.png" alt="">
                                         </div>
                                     </div>
                                     <div class="posttext pull-left">
@@ -53,7 +51,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                             <hr>
                             <?php
                             $topic_id = $row['0'];
-                            $conn = new database();
+                            $conn = new dbLink();
                             $conn->select("comments", "id_user, content, date_created, status", "id_topic = $topic_id and status = 'published'");
                             $result = $conn->sql;
                             if (mysqli_num_rows($result) > 0) {
@@ -63,11 +61,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                                     <div class="topwrap">
                                         <div class="userinfo pull-left">
                                             <div class="avatar">
-                                                <img src="/assets/images/avatar.jpg" alt="">
-                                            </div>
-
-                                            <div class="icons">
-                                                <img src="/assets/images/icon1.jpg" alt=""><img src="/assets/images/icon4.jpg" alt=""><img src="/assets/images/icon5.jpg" alt=""><img src="/assets/images/icon6.jpg" alt="">
+                                                <img src="/assets/images/avatar.png" alt="">
                                             </div>
                                         </div>
                                         <div class="posttext pull-left">
@@ -96,11 +90,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                                         <div class="topwrap">
                                             <div class="userinfo pull-left">
                                                 <div class="avatar">
-                                                    <img src="/assets/images/avatar4.jpg" alt="">
-                                                </div>
-
-                                                <div class="icons">
-                                                    <img src="/assets/images/icon3.jpg" alt=""><img src="/assets/images/icon4.jpg" alt=""><img src="/assets/images/icon5.jpg" alt=""><img src="/assets/images/icon6.jpg" alt="">
+                                                    <img src="/assets/images/avatar.png" alt="">
                                                 </div>
                                             </div>
                                             <div class="posttext pull-left">

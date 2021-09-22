@@ -1,6 +1,7 @@
-<?php include 'core/init.php';
-include 'require/header.php'; ?>
+<?php 
 
+include 'core/init.php';
+include 'require/header.php'; ?>
             <section class="content">
                 <br>
                 <div class="container">
@@ -9,8 +10,12 @@ include 'require/header.php'; ?>
                             <!-- Buttons -->
                             <div class="btn-options row">
                                 <div class="col-sm-2 col-xs-3">
-                                    <div class="postadd ">
-                                        <button class="btn btn-primary" control-id="ControlID-3" data-toggle="collapse" data-target="#newtopic">Crear tema</button>
+                                    <div class="postadd">
+                                    <?php if (isset($_SESSION['user'])) : ?>    
+                                        <button class="btn btn-primary" control-id="ControlID-3" data-toggle="collapse" data-target="#newtopicWrap">Crear tema</button>
+                                    <?php else : ?>    
+                                        <button class="btn btn-primary" control-id="ControlID-3" data-toggle="modal" data-target="#loginModal">Iniciar Sesión</button>
+                                    <?php endif; ?>    
                                     </div>
                                 </div>
                                 <div class="col-sm-10 col-xs-9 search">
@@ -30,71 +35,60 @@ include 'require/header.php'; ?>
                                 </div>
                             </div><!-- End Buttons -->
 
+                            <?php if (isset($_SESSION['user'])) : ?>
                             <!-- New Topic -->
-                            <div class="post collapse" id="newtopic">
-                                <form action="#" class="form newtopic" method="post">
-                                    <div class="topwrap">
-                                        <div class="userinfo pull-left">
-                                            <div class="avatar">
-                                                <img src="/assets/images/avatar4.jpg" alt="">
-                                            </div>
-
-                                            <div class="icons">
-                                                <img src="/assets/images/icon3.jpg" alt=""><img src="/assets/images/icon4.jpg" alt=""><img src="/assets/images/icon5.jpg" alt=""><img src="/assets/images/icon6.jpg" alt="">
-                                            </div>
-                                        </div>
-                                        <div class="posttext pull-left">
-
-                                            <div>
-                                                <input type="text" placeholder="Escribe el título del tema" name="title" class="form-control" control-id="ControlID-4">
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-lg-12 col-md-12">
-                                                    <input placeholder="Elige una categoría..." list="categories" name="category" class="form-control" control-id="ControlID-5">
-                                                    <datalist id="categories">
-                                                        <option value="Anuncios">
-                                                        <option value="Programación">
-                                                        <option value="Educación">
-                                                    </datalist>
+                            <div class="collapse" id="newtopicWrap">
+                                <div id="newtopicResponse">
+                                </div>
+                                <div class="post">
+                                    <form role="form" id="newtopicForm" class="form newtopic">
+                                        <div class="topwrap">
+                                            <div class="userinfo pull-left">
+                                                <div class="avatar">
+                                                    <img src="/assets/images/avatar.png" alt="">
                                                 </div>
                                             </div>
-                                            <br>
-                                            <div class="row">
-                                                <div class="col-lg-12">
-                                                    <div>
-                                                        <textarea name="content" id="content" placeholder="Contenido" class="form-control" control-id="ControlID-7"></textarea>
+                                            <div class="posttext pull-left">
+                                                <div>
+                                                    <input type="text" placeholder="Escribe el título del tema" id="title" name="title" class="form-control" control-id="ControlID-4">
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12 col-md-12">
+                                                        <input placeholder="Elige una categoría..." list="categories" id="category" name="category" class="form-control" control-id="ControlID-5">
+                                                        <datalist id="categories">
+                                                            <option value="Anuncios">
+                                                            <option value="Programación">
+                                                            <option value="Educación">
+                                                        </datalist>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div>
+                                                            <textarea name="content" id="content" id="name" placeholder="Contenido" class="form-control" control-id="ControlID-7"></textarea>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-
-                                        </div>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                    <div class="postinfobot">
-
-                                        <div class="notechbox pull-left">
-                                            <input type="checkbox" name="note" id="note" class="form-control" control-id="ControlID-13">
-                                        </div>
-
-                                        <div class="pull-left">
-                                            <label for="note"> Email me when some one post a reply</label>
-                                        </div>
-
-                                        <div class="pull-right postreply">
-                                            <div class="pull-left smile"><a href="#"><i class="fa fa-smile-o"></i></a></div>
-                                            <div class="pull-left"><button type="submit" class="btn btn-primary" control-id="ControlID-14">Post</button></div>
                                             <div class="clearfix"></div>
                                         </div>
-
-
-                                        <div class="clearfix"></div>
-                                    </div>
-                                </form>
+                                        <div class="postinfobot">
+                                            <div class="pull-right postreply">
+                                                <div class="pull-left">
+                                                    <button id="newtopicBtn" type="submit" class="btn btn-primary" control-id="ControlID-14">Publicar</button></div>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </form>
+                                </div>
                             </div><!-- End New Topic -->
+                            <?php endif; ?>   
+
                             <?php
-                            $conn = new database();
-                            $conn->select("topics", "*");
+                            $conn = new dbLink();
+                            $conn->select("topics", "*", "status = 'published'");
 
                             if ($conn->on) {
                                 $result = $conn->sql;
@@ -106,10 +100,7 @@ include 'require/header.php'; ?>
                                             <div class="wrap-ut pull-left" id="postcontent">
                                                 <div class="userinfo pull-left">
                                                     <div class="avatar">
-                                                        <img src="/assets/images/avatar.jpg" alt="">
-                                                    </div>
-                                                    <div class="icons">
-                                                        <img src="/assets/images/icon1.jpg" alt=""><img src="/assets/images/icon4.jpg" alt="">
+                                                        <img src="/assets/images/avatar.png" alt="">
                                                     </div>
                                                 </div>
                                                 <div class="posttext pull-left">
@@ -142,7 +133,7 @@ include 'require/header.php'; ?>
                                                     </div>
                                                     <div class="time">
                                                         <i class="fa fa-clock-o"></i>
-                                                        <?php echo get_ago($row['date_created']); ?>
+                                                        <?php echo getAgo($row['date_created']); ?>
                                                     </div>
                                                 </div>
 

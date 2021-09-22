@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <html lang="es">
     <head>
         <meta charset="utf-8">
@@ -35,11 +36,11 @@
     
                         <div class="col-lg-4 col-sm-5 col-md-4 avt">
                             <div class="avatar pull-right dropdown">
-                                <a data-toggle="dropdown" href="#"><img src="/assets/images/avatar.jpg" alt=""></a> <b class="caret"></b>
+                                <a data-toggle="dropdown" href="#"><img src="/assets/images/avatar.png" alt=""></a> <b class="caret"></b>
                                 
                                 <ul class="dropdown-menu" role="menu">
                                     <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Mi Perfil</a></li>
-                                    <li role="presentation"><a role="menuitem" tabindex="-" href="04_new_account.html">Cerrar Sesión</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-" href="/logout">Cerrar Sesión</a></li>
                                 </ul>
                             </div>
 
@@ -48,23 +49,39 @@
                     </div>
                 </div>
             </div><!-- End Header -->
+            
+            <?php if (!isset($_SESSION['user'])) : ?>
 
             <!-- Login Modal -->
-            <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <div class="modal-header" style="display: flex; align-items: center; justify-content: space-between;
+">
+                        <h5 class="modal-title" id="loginModalLabel">Iniciar Sesión</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        ...
+		    			<div id="loginResponse">
+					    </div>
+                        <form role="form" id="loginForm">
+                            <fieldset>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="Usuario" type="text" id="username" name="username" autofocus required>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="Contraseña" type="password" id="password" name="password" required>
+                                </div>
+                                <button id="loginBtn" type="submit"  class="btn btn-lg btn-primary btn-block">
+                                    <i class="fa fa-sign-in"></i> Login</button>
+                            </fieldset>
+                        </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary">Entrar</button>
                     </div>
                     </div>
                 </div>
@@ -90,3 +107,5 @@
                     </div>
                 </div>
             </div> <!-- End Register Modal -->
+
+            <?php endif; ?>

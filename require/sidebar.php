@@ -1,7 +1,7 @@
-                    
+
                     <div class="col-lg-4 col-md-4">
                         <?php
-                        $conn = new database();
+                        $conn = new dbLink();
                         $conn->select("categories", "*");
                         if ($conn->on) {
                             $result = $conn->sql;
@@ -23,9 +23,7 @@
                         } ?>
                         <!-- Posts Widget -->
                         <div class="sidebarblock">
-                            <h3>Mis Publicaciones</h3>
-                            <div class="divline"></div>
-                            <div class="blocktxt">
+                            <h3>Mis Publicaciones</h3>                            
                                 <?php echo  $conn->getUserPost(); ?>
                             </div>
                         </div><!-- End Posts Widget -->

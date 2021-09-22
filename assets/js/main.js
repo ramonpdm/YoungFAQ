@@ -1,6 +1,59 @@
 (function ($) {
   "use strict";
 
+  $(document).on("click", "#loginBtn", function () {
+    $("#loginForm").submit(function(e){e.preventDefault();});
+    if ($("#username").val() != "" && $("#password").val() != "") {
+      $("#loginResponse").css('display', 'block');
+      $("#loginResponse").html('<div class="alert alert-info text-center">Validando...</div>');
+
+      var loginForm = $("#loginForm").serialize();
+      setTimeout(function () {
+        $.ajax({
+          method: "POST",
+          url: "login",
+          data: loginForm,
+          success: function (data) {
+            if (data == "") {
+              $("#loginResponse").html('<div class="alert alert-success text-center">Inicio de Sesión exitoso!</div>');
+              setTimeout(function () {
+                $('#loginModal').modal('toggle')
+                
+              }, 500);
+              setTimeout(function () {
+                location.reload();
+               }, 600);
+            } else {
+              $("#loginResponse").html(data);
+            }
+          },
+        });
+      }, 500);
+    }
+  });
+
+  $(document).on('click', '#newtopicBtn', function(){
+    $("#newtopicForm").submit(function(e){e.preventDefault();});
+		if($('#title').val()!='' && $('#content').val()!=''){
+			$('#newtopicResponse').html('<div class="alert alert-info text-center">Creando...</div>');
+			var newtopicForm = $('#newtopicForm').serialize();
+			$.ajax({
+				method: 'POST',
+				url: 'newtopic',
+				data: newtopicForm,
+				success:function(data){
+					setTimeout(function(){
+					$('#newtopicResponse').html(data);
+					$('#newtopicForm')[0].reset();
+					}, 2000);
+				} 
+			});
+		}
+		else{
+			alert('Please input both fields to Sign Up');
+		}
+	});
+
   /*==================================================================
     [ Validate ]*/
   var input = $(".validate-input .input100");
@@ -70,10 +123,6 @@
     swap();
   });
 
-  var height = $( '#postcontent' ).height();
-  $("#postinfo").css("height", (height) + "px");
-
-
-
-
+  var height = $("#postcontent").height();
+  $("#postinfo").css("height", height + "px");
 })(jQuery);

@@ -23,6 +23,7 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <!-- JS -->
         <script type="text/javascript" src="/assets/js/main.js"></script>
+        <!-- <script type="text/javascript" src="/ajax.js"></script> -->
         <!-- Vendor -->
         <script type="text/javascript" src="/assets/js/jquery.themepunch.plugins.min.js"></script>
         <script type="text/javascript" src="/assets/js/jquery.themepunch.revolution.min.js"></script>
