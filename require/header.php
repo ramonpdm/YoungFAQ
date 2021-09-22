@@ -6,7 +6,10 @@
         <title>Foro | YoungFAQ</title>
 
         <!-- CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
         <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.min.css">
+
         <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
         <link rel="stylesheet" type="text/css" href="/assets/css/color.css">
         <link rel="stylesheet" type="text/css" href="/assets/css/responsive.css">
@@ -34,13 +37,18 @@
                             </div>
                         </div>
     
-                        <div class="col-lg-4 col-sm-5 col-md-4 avt">
+                        <div class="col  avt">
                             <div class="avatar pull-right dropdown">
                                 <a data-toggle="dropdown" href="#"><img src="/assets/images/avatar.png" alt=""></a> <b class="caret"></b>
                                 
                                 <ul class="dropdown-menu" role="menu">
+                                    <?php if (isset($_SESSION['user'])) : ?>
                                     <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Mi Perfil</a></li>
-                                    <li role="presentation"><a role="menuitem" tabindex="-" href="/logout">Cerrar Sesión</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-2" href="/logout<?php getSlug('logout'); ?>">Cerrar Sesión</a></li>
+                                    <?php else : ?>   
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" data-toggle="modal" data-target="#loginModal">Iniciar Sesión</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" data-toggle="modal" data-target="#registerModal">Registrarse</a></li>
+                                    <?php endif; ?>   
                                 </ul>
                             </div>
 
@@ -54,35 +62,33 @@
 
             <!-- Login Modal -->
             <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
+                <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                     <div class="modal-content">
-                    <div class="modal-header" style="display: flex; align-items: center; justify-content: space-between;
-">
-                        <h5 class="modal-title" id="loginModalLabel">Iniciar Sesión</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-		    			<div id="loginResponse">
-					    </div>
+                        <div class="modal-header" style="display: flex; align-items: center; justify-content: space-between;">
+                            <h5 class="modal-title" id="loginModalLabel">Iniciar Sesión</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
                         <form role="form" id="loginForm">
-                            <fieldset>
-                                <div class="form-group">
-                                    <input class="form-control" placeholder="Usuario" type="text" id="username" name="username" autofocus required>
+                            <div class="modal-body">
+                                <div id="loginResponse">
                                 </div>
-                                <div class="form-group">
-                                    <input class="form-control" placeholder="Contraseña" type="password" id="password" name="password" required>
-                                </div>
-                                <button id="loginBtn" type="submit"  class="btn btn-lg btn-primary btn-block">
-                                    <i class="fa fa-sign-in"></i> Login</button>
-                            </fieldset>
+                                
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <input class="form-control" placeholder="Usuario" type="text" id="username" name="username" autofocus required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control" placeholder="Contraseña" type="password" id="password" name="password" required>
+                                        </div>
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                <button id="loginBtn" type="submit" type="button" class="btn btn-primary"><i class="fa fa-sign-in"></i> Entrar</button>
+                            </div>
                         </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-primary">Entrar</button>
-                    </div>
                     </div>
                 </div>
             </div><!-- End Login Modal -->

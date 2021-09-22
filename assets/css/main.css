@@ -44,7 +44,6 @@ body {
 }
 
 a {
-    /* color: #363838;     */
     color: var(--thm-base);
     text-decoration: none;
     cursor: pointer;
@@ -332,6 +331,10 @@ ul.socialicons li a:hover {
 
 .sidebarblock .blocktxt {
     padding:20px;
+}
+
+.sidebarblock .blocktxt.pending a, .sidebarblock .blocktxt.pending i{
+    color: var(--thm-warning);
 }
 
 ul.cats li {

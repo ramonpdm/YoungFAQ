@@ -1,7 +1,6 @@
 <?php
 class dbLink
 {
-    public $que;
     public $on = false;
     private $DBHOST = 'localhost';
     private $DBUSER = 'root';
@@ -31,35 +30,38 @@ class dbLink
                 </div>
             </div><!-- End Error -->
 
-<?php
+            <?php
         }
         return $this->mysqli;
     }
 
-    public function insert($table, $para = array())
+    public $insert_id;
+    public $sql;
+
+    public function insert($table, $data = array())
     {
-        $table_columns = implode(',', array_keys($para));
-        $table_value = implode("','", $para);
+        $table_columns = implode(',', array_keys($data));
+        $table_value = implode("','", $data);
 
         $sql = "INSERT INTO $table($table_columns) VALUES('$table_value')";
-        
+
         if ($this->mysqli) {
             $this->mysqli->query($sql);
+            return $insert_id = $this->mysqli->insert_id;
+
         }
     }
 
-    public function update($table, $para = array(), $id)
+    public function update($table, $data = array(), $id)
     {
         $args = array();
 
-        foreach ($para as $key => $value) {
+        foreach ($data as $key => $value) {
             $args[] = "$key = '$value'";
         }
 
         $sql = "UPDATE  $table SET " . implode(',', $args);
-
         $sql .= " WHERE $id";
-
         $result = $this->mysqli->query($sql);
     }
 
@@ -71,8 +73,6 @@ class dbLink
         $result = $this->mysqli->query($sql);
     }
 
-    public $sql;
-
     public function select($table, $rows = "*", $where = null)
     {
         if ($this->mysqli) {
@@ -81,52 +81,74 @@ class dbLink
             } else {
                 $sql = "SELECT $rows FROM $table";
             }
-
             $this->sql = $result = $this->mysqli->query($sql);
         }
     }
 
-    public function getUser($id, $justName = false)
+    public function getUser($id, $justName = false) //Función para obtener el nombre de la tabla usuarios por el ID.
     {
         if ($this->mysqli) {
-            $s = "SELECT name FROM users WHERE id = $id";
-            $r = $this->mysqli->query($s);
-            if ($r != false) {
-                $user = mysqli_fetch_row($r);
+            $sql = "SELECT name FROM users WHERE id = $id";
+            $result = $this->mysqli->query($sql);
+            if ($result != false) {
+                $user = mysqli_fetch_row($result);
                 if (!empty($user)) {
-                    if ($justName == false){
-                    return '<i class="fa fa-user"></i> <span>' . $user[0] . '</span>';
-                }else{
-                    return '<span>' . $user[0] . '</span>';
-                }
+                    if ($justName == false) {
+                        return '<i class="fa fa-user"></i> <span>' . $user[0] . '</span>';
+                    } else {
+                        return '<span>' . $user[0] . '</span>';
+                    }
                 }
             }
             return;
         }
     }
 
-    public function getUserPost($id = null)
+    public function getCategories() //Función para obtener el Widget de Categorías del Sidebar.
+    {
+        if ($this->mysqli) {
+            $sql = "SELECT * FROM categories";
+            $result = $this->mysqli->query($sql);
+            if ($result != false) {
+                if (mysqli_num_rows($result) > 0) { ?>
+                    <!-- Categories Gadget -->
+                    <div class="sidebarblock">
+                        <h3>Categorías</h3>
+                        <div class="divline"></div>
+                        <div class="blocktxt">
+                            <ul class="cats">
+                                <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+                                    <li><a href="/category/<?php echo $row['slug']; ?>"><?php echo $row['name']; ?><span class="badge pull-right"><?php echo $row['count']; ?></span></a></li>
+                                <?php } ?>
+                            </ul>
+                        </div>
+                    </div><!-- End Categories Gadget -->
+                <?php  }
+            }
+        }
+    }
+
+    public function getUserPost($id = null) //Función para obtener el Widget de Publicaciones del Usuario Logeado del Sidebar.
     {
         if ($this->mysqli) {
             if (isset($_SESSION['user'])) {
                 $id = $_SESSION['user'];
-                $s = "SELECT id, id_user, title FROM topics WHERE id_user = $id AND status = 'published'";
-                $r = $this->mysqli->query($s);
-                if ($r != false) {
-                    while ($row = mysqli_fetch_assoc($r)) {?>
-                    <div class="divline"></div>
-                    <div class="blocktxt">
-                        <a href="/topic/<?php echo $row['id']; ?>"> <span><?php echo $row['title']; ?></a><br>
-                    </div>
-             <?php  }
+                $sql = "SELECT id, id_user, title, status FROM topics WHERE id_user = $id";
+                $result = $this->mysqli->query($sql);
+                if ($result != false) { ?>
+                    <!-- Posts Widget -->
+                    <div class="sidebarblock">
+                        <h3>Mis Publicaciones</h3>
+                        <?php while ($row = mysqli_fetch_assoc($result)) : ?>
+                            <div class="divline"></div>
+                            <div class="blocktxt <?php echo $row['status']; ?>">
+                                <?php if ($row['status'] == 'pending') { ?><i class="fa fa-clock-o"></i><?php } ?><a href="/topic/<?php echo $row['id']; ?>"> <span><?php echo $row['title']; ?></a><br>
+                            </div>
+                        <?php endwhile; ?>
+                    </div><!-- End Posts Widget -->
+<?php
                 }
-            } else {
-                return '<div class="divline"></div>
-                <div class="blocktxt">
-                No estás logueado, <a data-toggle="modal" data-target="#loginModal">inicia sesión</a> o <a data-toggle="modal" data-target="#registerModal">regístrate</a> </div>.' . PHP_EOL;
             }
-        } else {
-            return '<div class="posttext">Ha habido un error en el sistema. Favor contacte a un administrador.</div>' . PHP_EOL;
         }
     }
 
@@ -138,76 +160,6 @@ class dbLink
     }
 }
 
-class Topic extends dbLink
-{
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    public function create($fields = array()) {
-        if(!$this->insert('topics', $fields)) {
-            throw new Exception('Lo siento, ha habido un problema al creada tu publicación.');
-        }
-    }
-}
-
-class User extends dbLink
-{
-
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    public function check_login($username, $password)
-    {
-
-        $sql = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
-        $query = $this->mysqli->query($sql);
-
-        if ($query->num_rows > 0) {
-            $row = $query->fetch_array();
-            return $row['id'];
-        } else {
-            return false;
-        }
-    }
-
-    public function details($sql)
-    {
-
-        $query = $this->mysqli->query($sql);
-        $row = $query->fetch_array();
-        return $row;
-    }
-
-    public function escape_string($value)
-    {
-        return $this->mysqli->real_escape_string($value);
-    }
-}
-
-function getAgo($time)
-{
-    date_default_timezone_set('America/Santo_Domingo');
-    $periods = array("second", "min", "hour", "day", "week", "month", "year", "decade");
-    $lengths = array("60", "60", "24", "7", "4.35", "12", "10");
-
-    $now = time();
-
-    $difference     = $now - strtotime($time);
-    $tense         = "ago";
-
-    for ($j = 0; $difference >= $lengths[$j] && $j < count($lengths) - 1; $j++) {
-        $difference /= $lengths[$j];
-    }
-
-    $difference = round($difference);
-
-    if ($difference != 1) {
-        $periods[$j] .= "s";
-    }
-
-    return " $difference $periods[$j] ago ";
-}
+include('userClass.php');
+include('topicCLass.php');
+include('functions.php');

@@ -3,13 +3,15 @@
 include 'core/init.php';
 include 'require/header.php'; ?>
             <section class="content">
-                <br>
                 <div class="container">
                     <div class="row">
+                        <div class="col-lg-8 breadcrumbf">
+                            <a href="/">Inicio</a>
+                        </div>
                         <div class="col-lg-8 col-md-8">
                             <!-- Buttons -->
                             <div class="btn-options row">
-                                <div class="col-sm-2 col-xs-3">
+                                <div class="col-sm-3 col-xs-4">
                                     <div class="postadd">
                                     <?php if (isset($_SESSION['user'])) : ?>    
                                         <button class="btn btn-primary" control-id="ControlID-3" data-toggle="collapse" data-target="#newtopicWrap">Crear tema</button>
@@ -18,7 +20,7 @@ include 'require/header.php'; ?>
                                     <?php endif; ?>    
                                     </div>
                                 </div>
-                                <div class="col-sm-10 col-xs-9 search">
+                                <div class="col-sm-9 col-xs-8 search">
                                     <div class="wrap">
                                         <form action="#" method="post" class="form">
                                             <div class="pull-left txt">
