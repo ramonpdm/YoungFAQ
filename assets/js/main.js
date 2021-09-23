@@ -87,6 +87,22 @@
     } 
   });
 
+  $(document).on("keyup", "#searchInput", function () {
+    var str = $("#searchInput").val();
+    if (str.length==0) {
+      document.getElementById("searchResponse").innerHTML="";
+      return;
+    }
+    var xmlhttp=new XMLHttpRequest();
+    xmlhttp.onreadystatechange=function() {
+      if (this.readyState==4 && this.status==200) {
+        document.getElementById("searchResponse").innerHTML=this.responseText;
+      }
+    }
+    xmlhttp.open("GET","core/modules/search?q="+str,true);
+    xmlhttp.send();
+  });
+
   /*==================================================================
     [ Validate ]*/
   var input = $(".validate-input .input100");

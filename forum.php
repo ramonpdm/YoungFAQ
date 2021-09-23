@@ -12,14 +12,13 @@ if (isset($_GET['topic']) && is_numeric($_GET['topic'])) : //Si existe el parame
     $id_topic = $_GET['topic'];
 
 
-    $conn = new dbLink();
-    $conn->select("id, id_user, title, content, date_created, status", "topics", "id = $id_topic");
-    if ($conn->on) : //Si la conexión fue exitosa mostrar la página
-        $result = $conn->sql;
+    $topic = new Topic();
+    $topic->select("id, id_user, title, content, date_created, status", "topics", "id = $id_topic");
+    if ($topic->on) : //Si la conexión fue exitosa mostrar la página
+        $result = $topic->sql;
         $row = $result->fetch_array();
 
 ?>
-
         <section class="content">
             <div class="container">
                 <div class="row">
@@ -27,7 +26,7 @@ if (isset($_GET['topic']) && is_numeric($_GET['topic'])) : //Si existe el parame
                         <a href="/">Inicio</a> <span class="diviver">&gt;</span>
                         <a href="#">Foro</a>
                         <?php if (!empty($row[2])) {
-                            if ($user->isTopicAvailable($row[0])) {
+                            if ($topic->isTopicAvailable($row[0])) {
                                 echo '<span class="diviver">&gt;</span> <a>' . $row[2];
                             }
                         } ?>
@@ -89,7 +88,7 @@ if (isset($_GET['topic']) && is_numeric($_GET['topic'])) : //Si existe el parame
                         <?php endif; ?>
                         <?php
                         if (!empty($row)) : // Si la consulta principal tiene resultados.
-                            if ($user->isTopicAvailable($row[0])) : //Revisar si el usuario tiene acceso a ver este post.
+                            if ($topic->isTopicAvailable($row[0])) : //Revisar si el usuario tiene acceso a ver este post.
                                 $user_id = $row[1]; ?>
                                 <div id="forumResponse">
                                     <?php if ($row[5] == 'pending') : ?>
@@ -126,7 +125,7 @@ if (isset($_GET['topic']) && is_numeric($_GET['topic'])) : //Si existe el parame
                                         </div>
 
                                         <div class="next pull-right">
-                                            <a href="#"><i class="fa fa-share"></i></a>
+                                            <?php $topic->getTopicCategory($row['id']); ?>
                                         </div>
 
                                         <div class="clearfix"></div>

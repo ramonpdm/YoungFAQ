@@ -8,6 +8,4 @@
 	}else{
 		header('location:/');
 	}
-
-	
 ?>

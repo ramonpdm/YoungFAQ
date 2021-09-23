@@ -93,3 +93,5 @@ class dbLink
 include('classes/User.php');
 include('classes/Topic.php');
 include('functions.php');
+
+?>

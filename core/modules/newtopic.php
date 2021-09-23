@@ -6,12 +6,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { //Comprobamos que hemos recibido una
 	include_once('../init.php');
 
 	$topic = new Topic();
+	$user = new User();
 
 	if (isset($_SESSION['user']) || isset($_POST['title']) || isset($_POST['content'])) {
 		$id_user = $_SESSION['user'];
 		$title = $_POST['title'];
 		$category = $_POST['category'];
 		$content = $_POST['content'];
+
+		if ($user->isAdmin($id_user)){
+			$status = "published";
+		}else{
+			$status = "pending";
+		}
 
 		try {
 			$topic->insertData(
@@ -23,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { //Comprobamos que hemos recibido una
 					'content' 	=> $content,
 					'comments' 	=> 0,
 					'views' 	=> 0,
-					'status'	=> 'pending'
+					'status'	=> $status
 				),
 				array(
 					'id_topic'	=> $topic->nextID(),

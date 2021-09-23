@@ -8,7 +8,7 @@ class User extends dbLink
         parent::__construct();
     }
 
-    public function checkLogin($username, $password)
+    public function checkLogin($username, $password) //Función (muy básica) para revisar las credenciales.
     {
         $this->select("id, username, password", "users", "username = '$username' AND password = '$password'");
         $result = $this->sql;
@@ -20,7 +20,7 @@ class User extends dbLink
         }
     }
 
-    public function escape_string($value)
+    public function escape_string($value) //Función para sanitizar valores que irán en la consulta SQL.
     {
         return $this->mysqli->real_escape_string($value);
     }
@@ -49,7 +49,7 @@ class User extends dbLink
         if ($this->mysqli) {
             if (isset($_SESSION['user'])) {
                 $id = $_SESSION['user'];
-                $this->select("id, id_user, title, status", "topics", "id_user = $id");
+                $this->select("id, id_user, title, status", "topics", "id_user = $id", "ORDER BY date_created DESC");
                 $result = $this->sql; ?>
 
                 <!-- Posts Widget -->
@@ -104,33 +104,18 @@ class User extends dbLink
             }
         }
 
-        public function isTopicAvailable($id_topic) //Función para verificar si el tópico especificado está disponible para todos los usuarios.
+        public function isAdmin($id_user)
         {
-            $this->select("*", "topics", "id = '$id_topic'");
+            $this->select("*", "users", "id = '$id_user'");
             $result = $this->sql;
             $row = $result->fetch_array();
-
-            if (!empty($result)) {
-                if ($result->num_rows >= 1) {
-                    if ($row['status'] == 'pending') {
-                        if (isset($_SESSION['user'])) {
-                            $id_user = $_SESSION['user'];
-                            if ($row['id_user'] == $id_user) {
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        } else {
-                            return false;
-                        }
-                    } else {
-                        return true;
-                    }
+            if (isset($_SESSION['user'])) {
+                $id_user = $_SESSION['user'];
+                if ($row['id'] == $id_user) {
+                    return true;
                 } else {
                     return false;
                 }
-            } else {
-                return false;
             }
         }
     }

@@ -73,9 +73,9 @@ include 'require/header.php'; ?>
                                 </div>
                                 <div class="col-sm-10 search">
                                     <div class="wrap">
-                                        <form action="#" method="post" class="form">
+                                        <form role="form" class="form">
                                             <div class="pull-left txt">
-                                                <input type="text" class="form-control" placeholder="Buscar temas" control-id="ControlID-1">
+                                                <input id="searchInput" type="text" class="form-control" placeholder="Buscar temas" control-id="ControlID-1">
                                             </div>
                                             <div class="pull-right">
                                                 <button class="btn btn-default" type="button" control-id="ControlID-2">
@@ -88,15 +88,19 @@ include 'require/header.php'; ?>
                                 </div>
                             </div><!-- End Buttons -->
                     
+                            <div id="searchResponse" class="post sidebarblock">
+                                
+         
+                            </div>
 
                             <?php
-                            $conn = new dbLink();
                             $user = new User();
-                            $conn->select("*", "topics", "status = 'published'");
+                            $topic = new Topic();
+                            $topic->select("*", "topics", "status = 'published'", "ORDER BY date_created DESC");
 
-                            if ($conn->on) {
-                                $result = $conn->sql;
-                                if ($result->num_rows > 0) {
+                            if ($topic->on) {
+                                $result = $topic->sql;
+                                if ($result) {
                                     while ($row = $result->fetch_assoc()) {
                             ?>
                                         <!-- POST -->
@@ -118,16 +122,16 @@ include 'require/header.php'; ?>
                                                         <i class="fa fa-clock-o"></i><span><?php echo date('d M Y @ h:m A', strtotime($row['date_created'])); ?></span>
                                                     </div>
 
-                                                    <div class="next pull-right">
-                                                        <a href="#"><i class="fa fa-share"></i></a>
+                                                    <div class="next pull-right hidden-sm hidden-xs">
+                                                        <?php $topic->getTopicCategory($row['id']); ?>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="postinfo pull-right hidden-xs" id="postinfo">
+                                            <div class="postinfo pull-right hidden-xs hidden-sm" id="postinfo">
                                                 <div class="align-center">
                                                     <div class="comments">
                                                         <div class="commentbg">
-                                                            <?php echo $row['comments']; ?>
+                                                            <?php $topic->getTopicComments($row['id']); ?>
                                                             <div class="mark"></div>
                                                         </div>
                                                     </div>
