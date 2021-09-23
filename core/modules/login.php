@@ -2,7 +2,7 @@
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 	session_start();
-	include_once('core/init.php');
+	include_once('../init.php');
 
 	$user = new User();
 
@@ -10,13 +10,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		$username = $user->escape_string($_POST['username']);
 		$password = $user->escape_string($_POST['password']);
 
-		$auth = $user->check_login($username, $password);
+		$auth = $user->checkLogin($username, $password);
 
-		if (!$auth) {?>
+		if (!$auth) { ?>
 			<div class="alert alert-danger text-center">
-				<span>Usuario no encontrado. Intente nuevamente.</span>
+				<span>Usuario o contraseña no encontrado. Intente nuevamente.</span>
 			</div>
-	<?php } else {
+<?php } else {
 			$_SESSION['user'] = $auth;
 		}
 	} else {

@@ -2,27 +2,32 @@
   "use strict";
 
   $(document).on("click", "#loginBtn", function () {
-    $("#loginForm").submit(function(e){e.preventDefault();});
+    $("#loginForm").submit(function (e) {
+      e.preventDefault();
+    });
     if ($("#username").val() != "" && $("#password").val() != "") {
-      $("#loginResponse").css('display', 'block');
-      $("#loginResponse").html('<div class="alert alert-info text-center">Validando...</div>');
+      $("#loginResponse").css("display", "block");
+      $("#loginResponse").html(
+        '<div class="alert alert-info text-center">Validando...</div>'
+      );
 
       var loginForm = $("#loginForm").serialize();
       setTimeout(function () {
         $.ajax({
           method: "POST",
-          url: "login",
+          url: "core/modules/login",
           data: loginForm,
           success: function (data) {
             if (data == "") {
-              $("#loginResponse").html('<div class="alert alert-success text-center">Inicio de Sesión exitoso!</div>');
+              $("#loginResponse").html(
+                '<div class="alert alert-success text-center">Inicio de Sesión exitoso!</div>'
+              );
               setTimeout(function () {
-                $('#loginModal').modal('toggle')
-                
+                $("#loginModal").modal("toggle");
               }, 500);
               setTimeout(function () {
                 location.reload();
-               }, 600);
+              }, 600);
             } else {
               $("#loginResponse").html(data);
             }
@@ -32,27 +37,55 @@
     }
   });
 
-  $(document).on('click', '#newtopicBtn', function(){
-    $("#newtopicForm").submit(function(e){e.preventDefault();});
-		if($('#title').val()!='' && $('#content').val()!=''){
-			$('#newtopicResponse').html('<div class="alert alert-info text-center">Creando...</div>');
-			var newtopicForm = $('#newtopicForm').serialize();
-			$.ajax({
-				method: 'POST',
-				url: 'newtopic',
-				data: newtopicForm,
-				success:function(data){
-					setTimeout(function(){
-					$('#newtopicResponse').html(data);
-					$('#newtopicForm')[0].reset();
-					}, 2000);
-				} 
-			});
-		}
-		else{
-			alert('Please input both fields to Sign Up');
-		}
-	});
+  $(document).on("click", "#newtopicBtn", function () {
+    $("#newtopicForm").submit(function (e) {
+      e.preventDefault();
+    });
+    if ($("#title").val() != "" && $("#content").val() != "") {
+      $("#newtopicResponse").html(
+        '<div class="alert alert-info text-center">Creando...</div>'
+      );
+      var newtopicForm = $("#newtopicForm").serialize();
+      $.ajax({
+        method: "POST",
+        url: "core/modules/newtopic",
+        data: newtopicForm,
+        success: function (data) {
+          setTimeout(function () {
+            $("#newtopicResponse").html(data);
+            $("#newtopicForm")[0].reset();
+          }, 2000);
+        },
+      });
+    }
+  });
+
+  $(document).on("click", "#commentBtn", function () {
+    
+    $("#commentForm").submit(function (e) {
+      e.preventDefault();
+    });
+    if ($("#commentContent").val() != "") {
+      $("#forumResponse").html(
+        '<div class="alert alert-info text-center">Creando...</div>'
+      );
+      var commentForm = $("#commentForm").serialize();
+      $.ajax({
+        method: "POST",
+        url: "core/modules/comment",
+        data: commentForm,
+        success: function (data) {
+          setTimeout(function () {
+            $("#forumResponse").html(data);
+            $("#commentForm")[0].reset();
+          }, 2000);
+          setTimeout(function () {
+                location.reload();
+              }, 700);
+        },
+      });
+    } 
+  });
 
   /*==================================================================
     [ Validate ]*/

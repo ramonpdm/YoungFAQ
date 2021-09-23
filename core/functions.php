@@ -37,3 +37,5 @@ function getSlug($use = 'logout') //Funcion para obtener slug/etiqueta/parametro
         return basename(parse_url($url, PHP_URL_PATH));
     }
 }
+
+

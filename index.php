@@ -1,5 +1,5 @@
 <?php 
-
+session_start(); 
 include 'core/init.php';
 include 'require/header.php'; ?>
             <section class="content">
@@ -9,35 +9,7 @@ include 'require/header.php'; ?>
                             <a href="/">Inicio</a>
                         </div>
                         <div class="col-lg-8 col-md-8">
-                            <!-- Buttons -->
-                            <div class="btn-options row">
-                                <div class="col-sm-3 col-xs-4">
-                                    <div class="postadd">
-                                    <?php if (isset($_SESSION['user'])) : ?>    
-                                        <button class="btn btn-primary" control-id="ControlID-3" data-toggle="collapse" data-target="#newtopicWrap">Crear tema</button>
-                                    <?php else : ?>    
-                                        <button class="btn btn-primary" control-id="ControlID-3" data-toggle="modal" data-target="#loginModal">Iniciar Sesión</button>
-                                    <?php endif; ?>    
-                                    </div>
-                                </div>
-                                <div class="col-sm-9 col-xs-8 search">
-                                    <div class="wrap">
-                                        <form action="#" method="post" class="form">
-                                            <div class="pull-left txt">
-                                                <input type="text" class="form-control" placeholder="Buscar temas" control-id="ControlID-1">
-                                            </div>
-                                            <div class="pull-right">
-                                                <button class="btn btn-default" type="button" control-id="ControlID-2">
-                                                    <i class="fa fa-search"></i>
-                                                </button>
-                                            </div>
-                                            <div class="clearfix"></div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div><!-- End Buttons -->
-
-                            <?php if (isset($_SESSION['user'])) : ?>
+                        <?php if (isset($_SESSION['user'])) : ?>
                             <!-- New Topic -->
                             <div class="collapse" id="newtopicWrap">
                                 <div id="newtopicResponse">
@@ -88,14 +60,44 @@ include 'require/header.php'; ?>
                             </div><!-- End New Topic -->
                             <?php endif; ?>   
 
+                            <!-- Buttons -->
+                            <div class="btn-options row">
+                                <div class="col-sm-2 ">
+                                    <div class="postadd">
+                                    <?php if (isset($_SESSION['user'])) : ?>    
+                                        <button class="btn btn-primary" control-id="ControlID-3" data-toggle="collapse" data-target="#newtopicWrap">Crear tema</button>
+                                    <?php else : ?>    
+                                        <button class="btn btn-primary" control-id="ControlID-3" data-toggle="modal" data-target="#loginModal">Iniciar Sesión</button>
+                                    <?php endif; ?>    
+                                    </div>
+                                </div>
+                                <div class="col-sm-10 search">
+                                    <div class="wrap">
+                                        <form action="#" method="post" class="form">
+                                            <div class="pull-left txt">
+                                                <input type="text" class="form-control" placeholder="Buscar temas" control-id="ControlID-1">
+                                            </div>
+                                            <div class="pull-right">
+                                                <button class="btn btn-default" type="button" control-id="ControlID-2">
+                                                    <i class="fa fa-search"></i>
+                                                </button>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div><!-- End Buttons -->
+                    
+
                             <?php
                             $conn = new dbLink();
-                            $conn->select("topics", "*", "status = 'published'");
+                            $user = new User();
+                            $conn->select("*", "topics", "status = 'published'");
 
                             if ($conn->on) {
                                 $result = $conn->sql;
-                                if (mysqli_num_rows($result) > 0) {
-                                    while ($row = mysqli_fetch_assoc($result)) {
+                                if ($result->num_rows > 0) {
+                                    while ($row = $result->fetch_assoc()) {
                             ?>
                                         <!-- POST -->
                                         <div class="post">
@@ -106,13 +108,13 @@ include 'require/header.php'; ?>
                                                     </div>
                                                 </div>
                                                 <div class="posttext pull-left">
-                                                    <h2><a href="/topic/<?php echo $row['id']; ?>"><?php echo $row['title']; ?></a></h2>
+                                                    <h2><a href="/forum?topic=<?php echo $row['id']; ?>"><?php echo $row['title']; ?></a></h2>
                                                     <p><?php echo $row['content']; ?></p>
                                                 </div>
                                                 <div class="clearfix"></div>
                                                 <div class="postinfobot">
                                                     <div class="posted pull-left">
-                                                        <?php echo $conn->getUser($row['id_user']); ?>
+                                                        <?php $user->getUserName($row['id_user']); ?>
                                                         <i class="fa fa-clock-o"></i><span><?php echo date('d M Y @ h:m A', strtotime($row['date_created'])); ?></span>
                                                     </div>
 
@@ -162,7 +164,10 @@ include 'require/header.php'; ?>
                             } ?>
                         </div>
                         
-                        <?php require('require/sidebar.php'); ?>
+                        <div class="col-lg-4 col-md-4">
+                            <?php $user->getCategories(); ?>
+                            <?php $user->getUserPost(); ?>
+                        </div>
 
                     </div>
                 </div>
