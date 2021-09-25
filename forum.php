@@ -34,7 +34,7 @@ if (isset($_GET['topic']) && is_numeric($_GET['topic'])) : //Si existe el parame
                     </div>
                     <div class="col-lg-8 col-md-8">
 
-                        <?php if (isset($_SESSION['user'])) : //Si está logueado permitir que pueda crear una publicación. 
+                        <?php if ($user->isLogged()) : //Si está logueado permitir que pueda crear una publicación. 
                         ?>
                             <!-- New Topic -->
                             <div class="collapse" id="newtopicWrap">
@@ -94,8 +94,8 @@ if (isset($_GET['topic']) && is_numeric($_GET['topic'])) : //Si existe el parame
                                         <div class="post">
                                             <div class="wrap-ut revision">
                                                 <div class="btn-options">
-                                                    <?php if (!$topic->getTopicStatus($id_topic, 'approved')) : ?><button class="btn btn-primary" data-id="<?php echo $id_topic; ?>" id="approveTopicBtn">Aprobar Publicación</button><div class="separator"></div><?php endif; ?>
-                                                    <?php if ($topic->getTopicStatus($id_topic,  'refused'))  : ?><button class="btn btn-danger" data-id="<?php echo $id_topic; ?>"  id="removeTopicBtn" >Eliminar Definitivamente</button><?php endif; ?>
+                                                    <?php if (!$topic->getTopicStatus($id_topic, 'approved')) : ?><button class="approveBtn btn btn-primary" data-type="topics" data-response="#forumResponse" data-id="<?php echo $id_topic; ?>" id="approveTopicBtn">Aprobar Publicación</button><div class="separator"></div><?php endif; ?>
+                                                    <?php if ($topic->getTopicStatus($id_topic,  'refused'))  : ?><button class="removeBtn btn btn-danger" data-type="topics" data-response="#forumResponse" data-id="<?php echo $id_topic; ?>"  id="removeTopicBtn" >Eliminar Definitivamente</button><?php endif; ?>
                                                     <?php if (!$topic->getTopicStatus($id_topic, 'refused'))  : ?><button class="btn btn-danger" data-toggle="collapse" data-target="#revisionTopic">Rechazar Publicación</button><?php endif; ?>
                                                 </div>
                                             </div>
@@ -209,12 +209,36 @@ if (isset($_GET['topic']) && is_numeric($_GET['topic'])) : //Si existe el parame
                                         <!-- Comment Section -->
                                         <div class="post container-fluid">
                                         <?php if ($row_comment['status'] == 'pending') : //Avisar al usuario de que su publicación se encuentra en revisón ?>
-                                            <!-- Pending Advise -->
-                                                <div class="wrap-ut comment alert-warning">
-                                                    <div class="posttext ">
-                                                        <i class="fa fa-clock-o" style="margin-right: 5px;"></i><span>Este comentario está pendiente de aprobación. Sólo los moderadores lo pueden ver.</span>
+                                        <!-- Pending Advise -->
+                                        <div id="commentResponse<?php echo $row_comment['id']; ?>">
+                                            <div class="wrap-ut comment alert-warning">
+                                                <div class="posttext container-fluid">
+                                                    <div class="row">
+                                                        <div class="col-lg-8">
+                                                            <div class="blocktxt">
+                                                                  <i class="fa fa-clock-o" style="margin-right: 5px;"></i><span>Este comentario está pendiente de aprobación. Sólo los moderadores lo pueden ver.</span>
+                                                            </div>
+                                                        </div>
+                                                        <?php if ($user->isAdmin()) : ?>
+                                                        <div class="col-lg-4">
+                                                            <div class="cotainer-fluid">
+                                                                <div class="row">
+                                                                    <div class="col-xs-6">
+                                                                     <button class="approveBtn btn btn-primary" data-type="comments" data-response="#commentResponse<?php echo $row_comment['id']; ?>" data-id="<?php echo $row_comment['id']; ?>" id="approveCommentBtn">Aprobar</button>
+                                                                    </div>
+                                                                    <div class="col-xs-6">
+                                                                        <button class="removeBtn btn btn-danger" data-type="comments" data-response="#commentResponse<?php echo $row_comment['id']; ?>" data-id="<?php echo $row_comment['id']; ?>" data-target="removeCommentBtn">Eliminar</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <?php endif; ?>
                                                     </div>
-                                            </div><!-- End Pending Advise -->
+                                                  
+                                                </div>
+                                            </div>
+                                        </div><!-- End Pending Advise -->
+                                            
                                         <?php endif; ?>
                                             <div class="wrap-ut" id="postcontent">
                                                 <div class="row">
@@ -245,22 +269,25 @@ if (isset($_GET['topic']) && is_numeric($_GET['topic'])) : //Si existe el parame
                                                 </div>
                                             </div>
                                         </div><!-- End Comment Section -->
+                                        <hr>
                                         <?php endif; ?>
                                     <?php endwhile; ?>
-                                     <hr>
+                                     
                                     <?php
                                 }
-                                if (!isset($_SESSION['user'])) : //Si no está logueado no se mostrará la caja de comentarios.
+                                if (!$user->isLogged()) : //Si no está logueado no se mostrará la caja de comentarios.
                                     ?>
 
                                     <!-- Log-in Advise -->
                                     <div class="post">
                                         <div class="wrap-ut not-found">
                                             <div class="posttext">
-                                                Inicia sesión para unirte a la discusión y publicar un comentario.
+                                                Inicia sesión o regístrate para unirte a la discusión y publicar un comentario.
                                             </div>
                                             <div class="right">
                                                 <button class="btn btn-primary"  data-toggle="modal" data-target="#loginModal">Iniciar Sesión</button>
+                                                <div class="separator"></div>
+                                                <button class="btn btn-secondary" data-toggle="modal" data-target="#registerModal" control-id="ControlID-8">Registarse</button>
                                             </div>
                                         </div>
                                     </div><!-- End Log-in Advise -->
@@ -300,8 +327,7 @@ if (isset($_GET['topic']) && is_numeric($_GET['topic'])) : //Si existe el parame
                                                 <div class="postinfobot">
                                                     <div class="postreply pull-right">
                                                         <div class="">
-                                                            <input type="hidden" name="id_topic" value="<?php echo ($_GET['topic']); //Esto es muy inseguri. Lo correcto es pasar el valor del post de otra manera. 
-                                                                                                        ?>">
+                                                            <input type="hidden" name="id_object" value="<?php echo ($_GET['topic']); //Esto es muy inseguro. Lo correcto es pasar el valor del post de otra manera. ?>">
                                                             <button id="commentBtn" type="submit" class="btn btn-primary" >Enviar</button>
                                                         </div>
                                                     </div>
@@ -321,7 +347,7 @@ if (isset($_GET['topic']) && is_numeric($_GET['topic'])) : //Si existe el parame
                                             La publicación o la pregunta que estás buscando no existe.
                                         </div>
                                         <div class="right">
-                                            <?php if (isset($_SESSION['user'])) : ?>
+                                            <?php if ($user->isLogged()) : ?>
                                                 <button class="btn btn-primary"  data-toggle="collapse" data-target="#newtopicWrap">Crear publicación</button>
                                             <?php else : ?>
                                                 <button class="btn btn-primary"  data-toggle="modal" data-target="#loginModal">Iniciar Sesión</button>
@@ -339,7 +365,7 @@ if (isset($_GET['topic']) && is_numeric($_GET['topic'])) : //Si existe el parame
                                         La publicación o la pregunta que estás buscando no existe.
                                     </div>
                                     <div class="right">
-                                        <?php if (isset($_SESSION['user'])) : ?>
+                                        <?php if ($user->isLogged()) : ?>
                                             <button class="btn btn-primary"  data-toggle="collapse" data-target="#newtopicWrap">Crear publicación</button>
                                         <?php else : ?>
                                             <button class="btn btn-primary"  data-toggle="modal" data-target="#loginModal">Iniciar Sesión</button>

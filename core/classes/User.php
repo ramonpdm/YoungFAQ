@@ -8,9 +8,16 @@ class User extends dbLink
         parent::__construct($error_message);
     }
 
-    public function checkLogin($username, $password) //Función (muy básica) para revisar las credenciales.
+    public function checkCredencials($username, $password = null) //Función (muy básica) para revisar las credenciales.
     {
-        $this->select("id, username, password", "users", "username = '$username' AND password = '$password'");
+        if (!is_null($password)) {
+            $password_sql = "AND password = " . $password;
+        } else {
+            $password_sql = "";
+        }
+
+
+        $this->select("id, username, password", "users", "username = '$username' " . $password_sql);
         $result = $this->sql;
         if ($result->num_rows > 0) {
             $row = $result->fetch_array();
@@ -34,19 +41,24 @@ class User extends dbLink
                     $id_user = $this->isLogged(true);
                 }
             }
-            $this->select("name", "users", "id = $id_user");
-            $result = $this->sql;
 
-            if ($result != false) {
-                $row = $result->fetch_array();
-                if ($icon == true) {
-                    if ($this->isAdmin($id_user)) {
-                        echo '<a class="d-flex-j-center-a-center" style="color: var(--thm-base);" href="/archive?user=' . $id_user . '"><i class="fa fa-star" style="color: var(--thm-base);"></i> <span class="user_name" style="color: var(--thm-base);">' . $row[0] . '</span></a>';
+            if ($id_user == null) {
+
+                $this->select("name", "users", "id = $id_user");
+                $result = $this->sql;
+
+                if ($result) {
+
+                    $row = $result->fetch_array();
+                    if ($icon == true) {
+                        if ($this->isAdmin($id_user)) {
+                            echo '<a class="d-flex-j-center-a-center" style="color: var(--thm-base);" href="/archive?user=' . $id_user . '"><i class="fa fa-star" style="color: var(--thm-base);"></i> <span class="user_name" style="color: var(--thm-base);">' . $row[0] . '</span></a>';
+                        } else {
+                            echo '<a class="d-flex-j-center-a-center" style="color: var(--thm-gray-1);" href="/archive?user=' . $id_user . '"><i class="fa fa-user"></i> <span class="user_name">' . $row[0] . '</span></a>';
+                        }
                     } else {
-                        echo '<a class="d-flex-j-center-a-center" style="color: var(--thm-gray-1);" href="/archive?user=' . $id_user . '"><i class="fa fa-user"></i> <span class="user_name">' . $row[0] . '</span></a>';
+                        echo '<span class="user_name">' . $row[0] . '</span>';
                     }
-                } else {
-                    echo '<span class="user_name">' . $row[0] . '</span>';
                 }
             }
         }
@@ -58,26 +70,29 @@ class User extends dbLink
             if ($this->isLogged()) {
                 $id_user = $this->isLogged(true);
                 $this->select("id, id_user, title, status", "topics", "id_user = $id_user", "ORDER BY date_created DESC");
-                $result = $this->sql; ?>
+                $result = $this->sql;
+                if ($result) { ?>
 
-                <!-- Posts Widget -->
-                <div class="sidebarblock">
-                    <h3>Mis Publicaciones</h3>
-                    <?php if ($result->num_rows >= 1) { ?>
-                        <?php while ($row = $result->fetch_assoc()) : ?>
-                            <div class="divline"></div>
-                            <div class="blocktxt <?php echo $row['status']; ?>">
-                                <?php if ($row['status'] == 'pending') { ?><i class="fa fa-clock-o"></i><?php } ?><a href="/forum?topic=<?php echo $row['id']; ?>"> <span><?php echo $row['title']; ?></a><br>
-                            </div>
-                        <?php endwhile; ?>
-                </div>
-            <?php } else { ?>
-                <div class="divline"></div>
-                <div class="blocktxt">
-                    <span>No tienes ninguna publicación, </span><a href="javascript:void(0);" data-toggle="collapse" data-target="#newtopicWrap">crea</a> una.
-                </div>
-                </div><!-- End Posts Widget -->
-            <?php
+                    <!-- Posts Widget -->
+                    <div class="sidebarblock">
+                        <h3>Mis Publicaciones</h3>
+                        <?php
+                        if ($result->num_rows > 1) { ?>
+                            <?php while ($row = $result->fetch_assoc()) : ?>
+                                <div class="divline"></div>
+                                <div class="blocktxt <?php echo $row['status']; ?>">
+                                    <?php if ($row['status'] == 'pending') { ?><i class="fa fa-clock-o"></i><?php } ?><a href="/forum?topic=<?php echo $row['id']; ?>"> <span><?php echo $row['title']; ?></a><br>
+                                </div>
+                            <?php endwhile; ?>
+                    </div>
+                <?php } else { ?>
+                    <div class="divline"></div>
+                    <div class="blocktxt">
+                        <span>No tienes ninguna publicación, </span><a href="javascript:void(0);" data-toggle="collapse" data-target="#newtopicWrap">crea</a> una.
+                    </div>
+                    </div><!-- End Posts Widget -->
+                <?php
+                        }
                     }
                 }
             }
@@ -111,42 +126,55 @@ class User extends dbLink
             }
         }
 
+        public function getPendingComments($id_topic) //Función para obtener el número de comentarios pendientes de un post específico
+        {
+            $this->select("comments.id, COUNT(comments.id) AS cantidad", "comments INNER JOIN topics on topics.id = comments.id_topic", "topics.id = '" . $id_topic . "' and comments.status = 'pending'");
+            $result = $this->sql;
+            if ($result) {
+                if ($result->num_rows > 0) {
+                    $row = $result->fetch_assoc();
+                    return $row['cantidad'];
+                } else {
+                    return 0;
+                }
+            } else {
+                return 0;
+            }
+        }
+
         public function getPendingPosts() //Función para obtener widget de administradores para revisar los post pendientes de aprobación.
         {
             if ($this->isAdmin()) {
                 if ($this->mysqli) {
-                    $this->select("*", "topics", "topics.status = 'pending'", "ORDER BY id DESC");
+                    $this->select("*", "topics");
                     $result = $this->sql;
                     if ($result != false) { ?>
                 <!-- Pending Posts Widget -->
                 <div class="sidebarblock">
                     <h3>Pendiente Aprobación</h3>
-                    <?php if ($result->num_rows >= 1) { ?>
+                    <?php if ($result->num_rows > 0) { ?>
                         <ul class="cats">
                             <?php while ($row = $result->fetch_assoc()) : ?>
-
-                                <div class="divline"></div>
-                                <li>
-                                    <div class="d-flex-j-center-a-center">
-                                        <div class="blocktxt <?php echo $row['status']; ?>">
-                                            <i class="fa fa-clock-o"></i><a href="/forum?topic=<?php echo $row['id']; ?>"> <span><?php echo $row['title']; ?></a>
-                                        </div>
-                                        <?php $this->select("*", "topics INNER JOIN categories on comments.id_topic = topics.id", "topics.id = '" . $row['id'] . "' and comments.status = 'approved'");
-                                        $result2 = $this->sql;
-
-                                        if ($result->num_rows > 0) :
-                                            while ($row_comment = $result2->fetch_assoc()) :
-                                        ?>
+                                <?php if ($this->getPendingComments($row['id']) > 0 || $row['status'] == 'pending') : ?>
+                                    <div class="divline"></div>
+                                    <li>
+                                        <div class="d-flex-j-between-a-center">
+                                            <div class="blocktxt <?php echo $row['status']; ?>">
+                                                <?php if ($row['status'] == 'pending') : ?>
+                                                    <i class="fa fa-clock-o"></i><a href="/forum?topic=<?php echo $row['id']; ?>"> <span><?php echo $row['title']; ?></a>
+                                                <?php else : ?>
+                                                    <a href="/forum?topic=<?php echo $row['id']; ?>" style="color: var(--thm-base)"> <span><?php echo $row['title']; ?></a>
+                                                <?php endif; ?>
+                                            </div>
+                                            <?php if ($this->getPendingComments($row['id']) > 0) : ?>
                                                 <div class="blockbdg">
-                                                    <span data-toggle="tooltip" data-placement="bottom" title="Comentarios pendiente" class="badge pull-right">1</span>
+                                                    <span data-toggle="tooltip" data-placement="bottom" title="Comentarios pendiente" class="badge pull-right"><?php echo $this->getPendingComments($row['id']); ?></span>
                                                 </div>
-                                                <?php ?>
-                                    </div>
-                                </li>
-                    <?php
-                                            endwhile;
-                                        endif;
-                                    endwhile; ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </li>
+                                <?php endif; ?>
+                            <?php endwhile; ?>
                         </ul>
                 </div>
             <?php } else { ?>
@@ -169,8 +197,8 @@ class User extends dbLink
                 if ($this->mysqli) {
                     $this->select("*", "topics", "topics.status = 'refused'", "ORDER BY id DESC");
                     $result = $this->sql;
-                    if ($result != false) {
-                        if ($result->num_rows >= 1) { ?>
+                    if ($result) {
+                        if ($result->num_rows > 0) { ?>
                 <!-- Pending Posts Widget -->
                 <div class="sidebarblock">
                     <h3>Pendiente Correción</h3>
@@ -188,16 +216,18 @@ class User extends dbLink
             }
         }
 
-        public function isLogged($return_user = false)
+        public function isLogged($return_user = false) //Función para revisar si hay una sesión abierta.
         {
             if (isset($_SESSION['user'])) {
-                if ($return_user == false) {
-                    return true;
+                if ($_SESSION['user'] != null) {
+                    if ($return_user == false) {
+                        return true;
+                    } else {
+                        return $_SESSION['user'];
+                    }
                 } else {
-                    return $_SESSION['user'];
+                    return false;
                 }
-            } else {
-                return false;
             }
         }
 

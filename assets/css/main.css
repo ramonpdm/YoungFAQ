@@ -66,6 +66,11 @@ div.separator{
     display: inline
 }
 
+.d-flex-j-between-a-center {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 .d-flex-j-center-a-center {
     display: flex;
     justify-content: center;
@@ -357,7 +362,7 @@ ul.cats .badge {
     font-size: 12px;
     color: #ffffff;
     font-family: 'Open Sans Bold', sans-serif;
-    margin-top: 7px;
+    /* margin-top: 7px; */
 }
 
 
@@ -767,6 +772,26 @@ a.down:hover {
 .btn-primary:focus {
     border: none;
     background-color: #20e1bb;
+    box-shadow: none;
+}
+
+.btn-secondary {
+    background-color: var(--thm-base);
+    box-shadow: none;
+    border-radius: 2px;
+    padding: 10px 15px;
+    color: #ffffff;
+    font-size: 14px;
+    font-family: 'Open Sans Bold', sans-serif; 
+    border: none;
+}
+
+.btn-secondary:hover,
+.btn-secondary:active,
+.btn-secondary:focus {
+    border: none;
+    background-color: #0a7bf4;
+    color: #ffffff;
     box-shadow: none;
 }
 .btn-danger{

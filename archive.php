@@ -3,6 +3,10 @@ session_start();
 require 'core/classes/dbLink.php';
 require('core/modules/functions.php');
 require('require/header.php');
+if (!isset($_GET['category']) && !isset($_GET['user'])){
+    header('location: /');
+}
+$user = new User(false); $topic = new Topic();
 ?>
             <section class="content">
                 <div class="container">
@@ -11,7 +15,7 @@ require('require/header.php');
                             <a href="/">Inicio</a>
                         </div>
                         <div class="col-lg-8 col-md-8">
-                        <?php if ($user->isLogged()) : ?>
+                        <?php if (isset($_SESSION['user'])) : ?>
                             <!-- New Topic -->
                             <div class="collapse" id="newtopicWrap">
                                 <div id="newtopicResponse">
@@ -22,12 +26,12 @@ require('require/header.php');
                                             <div class="posttext">
                                                 <div class="row">
                                                     <div class="col-lg-12">
-                                                        <input type="text" placeholder="Escribe el título de la publicación" id="title" name="title" class="form-control"  autocomplete="off" required>
+                                                        <input type="text" placeholder="Escribe el título de la publicación" id="title" name="title" class="form-control" autocomplete="off">
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-sm-12">
-                                                        <input placeholder="Elige una categoría..." list="categories" id="category" name="category" class="form-control"  autocomplete="off">
+                                                        <input placeholder="Elige una categoría..." list="categories" id="category" name="category" class="form-control" autocomplete="off">
                                                         <datalist id="categories">
                                                             <option value="Anuncios">
                                                             <option value="Programación">
@@ -60,21 +64,54 @@ require('require/header.php');
                             </div><!-- End New Topic -->
                             <?php endif; ?>   
 
-                            <!-- Buttons -->
+                            <!-- Archive Header -->
                             <div class="btn-options container-fluid">
+                                <?php 
+
+                                    if (isset($_GET['category'])){
+                                        $archive = 'category';
+                                        $id_object = $_GET['category'];
+                                        $topic->select("name", "categories", "id_category = " . $id_object);
+                                        $result = $topic->sql;
+                                        if ($result){
+                                            $row = $result->fetch_array();
+                                            if ($result->num_rows > 0) {
+                                                $title = 'Categoría: <strong>' . $row['name'] . '</strong>';
+                                            }else{
+                                                $title = false;
+                                            }  
+                                        }
+                                    } 
+                                    
+                                    if (isset($_GET['user'])){
+                                        $archive = 'user';
+                                        $id_object = $_GET['user'];
+                                        $topic->select("name", "users", "id = " . $id_object);
+                                        $result = $topic->sql;
+                                        if ($result){
+                                            $row = $result->fetch_array();
+                                            if ($result->num_rows > 0) {
+                                                $title = 'Autor: <strong>' . $row['name'] . '</strong>';
+                                            }else{
+                                                $title = false;
+                                            }  
+                                        }
+                                    }
+
+                                    if ($title != false) :
+                                ?>
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <div class="postadd">
-                                        <?php if ($user->isLogged()) : ?>    
-                                            <button class="btn btn-primary"  data-toggle="collapse" data-target="#newtopicWrap">Crear publicación</button>
-                                        <?php else : ?>    
-                                            <button class="btn btn-primary"  data-toggle="modal" data-target="#loginModal">Iniciar Sesión</button>
-                                            <div class="separator"></div>
-                                            <button class="btn btn-secondary"  data-toggle="modal" data-target="#registerModal">Registarse</button>
-                                        <?php endif; ?>    
+                                        <div class="post">
+                                            <div class="wrap-ut not-found">
+                                                <div class="posttext">
+                                                    <h2><?php echo $title; ?></h2>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                                <?php endif ?>
                                 <div class="row">
                                     <div class="col-sm-12 search">
                                         <div class="wrap">
@@ -85,19 +122,20 @@ require('require/header.php');
                                         </div>
                                     </div>
                                 </div>
-                            </div><!-- End Buttons -->
+                            </div><!-- Archive Header -->
                     
                             <div id="searchResponse" class="post sidebarblock">
                             </div>
 
                             <?php
-                            $user = new User(false);
-                            $topic = new Topic();
-                            $topic->select("*", "topics", "status = 'approved'", "ORDER BY reviewed_date DESC");
+                           
+                            if ($archive == 'category'): $topic->select("topics.id, topics.id_user, topics.title, topics.content, topics.reviewed_date, categories.id_topic, categories.name", "topics INNER JOIN categories on categories.id_topic = topics.id", "status = 'approved' and categories.id_category = '$id_object '", "ORDER BY reviewed_date DESC"); endif;
+                            if ($archive == 'user'): $topic->select("*", "topics", "status = 'approved' and topics.id_user = '$id_object '", "ORDER BY reviewed_date DESC"); endif;
 
                             if ($topic->on) {
                                 $result = $topic->sql;
-                                if ($result) {
+                                if ($result){
+                                if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
                             ?>
                                         <!-- POST -->
@@ -157,12 +195,13 @@ require('require/header.php');
                                                 No hay publicaciones ni preguntas para mostrar.
                                             </div>
                                             <div class="right">
-                                                <button class="btn btn-primary" >Crear publicación</button>
+                                            <button class="btn btn-primary" data-toggle="collapse" data-target="#newtopicWrap" control-id="ControlID-1" aria-expanded="true">Crear publicación</button>
                                             </div>
                                         </div>
                                     </div><!-- End POST Not Found-->
-
-                            <?php }
+                            <?php 
+                                    }    
+                                }
                             } ?>
                         </div>
                         
@@ -177,4 +216,6 @@ require('require/header.php');
                 </div>
             </section>
 
-<?php require('require/footer.php');
+<?php 
+
+require('require/footer.php');

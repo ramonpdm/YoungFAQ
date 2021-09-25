@@ -37,12 +37,55 @@
     }
   });
 
+  $(document).on("click", "#registerBtn", function () {
+    $("#registerForm").submit(function (e) {
+      e.preventDefault();
+    });
+    if (
+      $("#usernameReg").val() != "" &&
+      $("#fullnameReg").val() != "" &&
+      $("#emailReg").val() != "" &&
+      $("#passwordReg").val() != ""
+    ) {
+      $("#registerResponse").css("display", "block");
+      $("#registerResponse").html(
+        '<div class="alert alert-info text-center">Validando...</div>'
+      );
+
+      var loginForm = $("#registerForm").serialize();
+      setTimeout(function () {
+        $.ajax({
+          method: "POST",
+          url: "core/modules/actions",
+          data: loginForm,
+          success: function (data) {
+            if (data == "") {
+              $("#registerResponse").html(
+                '<div class="alert alert-success text-center">Registro exitoso!</div>'
+              );
+              setTimeout(function () {
+                $("#registerModal").modal("hide");
+                $("#loginModal").modal("show");
+              }, 600);
+            } else {
+              $("#registerResponse").html(data);
+            }
+          },
+        });
+      }, 500);
+    } else {
+      $("#registerResponse").html(
+        '<div class="alert alert-danger text-center">Debes completar el formulario correctamente.</div>'
+      );
+    }
+  });
+
   $(document).on("click", "#newtopicBtn", function () {
     $("#newtopicForm").submit(function (e) {
       e.preventDefault();
     });
     if ($("#title").val() != "" && $("#content").val() != "") {
-      if ($("#content").val().length > 50) {
+      if ($("#content").val().length > 100 && $("#title").val().length < 100) {
         $("#newtopicResponse").html(
           '<div class="alert alert-info text-center">Creando...</div>'
         );
@@ -63,18 +106,18 @@
         });
       } else {
         $("#newtopicResponse").html(
-          '<div class="alert alert-danger text-center"><span>El contenido debe tener mínimo 50 carácteres.</span></div>'
+          '<div class="alert alert-danger text-center"><span>El título debe tener máximo 100 carácteres y el contenido debe tener mínimo 100 carácteres.</span></div>'
         );
         setTimeout(function () {
-          $("#newtopicResponse").html('');
+          $("#newtopicResponse").html("");
         }, 2000);
       }
-    }else{
+    } else {
       $("#newtopicResponse").html(
         '<div class="alert alert-danger text-center"><span>Completa todos los campos correctamente.</span></div>'
       );
       setTimeout(function () {
-        $("#newtopicResponse").html('');
+        $("#newtopicResponse").html("");
       }, 2000);
     }
   });
@@ -105,23 +148,26 @@
     }
   });
 
-  $(document).on("click", "#approveTopicBtn", function () {
+  $(document).on("click", ".approveBtn", function () {
     var id = $(this).data("id");
-    if (confirm("¿Deseas aprobar esta publicación?")) {
-      $("#forumResponse").html(
+    var divResponse = $(this).data("response");
+    var typeOBject = $(this).data("type");
+    if (confirm("¿Deseas aprobar este objeto?")) {
+      $(divResponse).html(
         '<div class="alert alert-info text-center">Creando...</div>'
       );
       $.ajax({
         method: "POST",
         url: "core/modules/actions",
         data: {
-          id_topic: id,
+          id_object: id,
           action: "approved",
           reason: "",
+          type: typeOBject,
         },
         success: function (data) {
           setTimeout(function () {
-            $("#forumResponse").html(data);
+            $(divResponse).html(data);
           }, 500);
           setTimeout(function () {
             location.reload();
@@ -131,19 +177,25 @@
     }
   });
 
-  $(document).on("click", "#removeTopicBtn", function () {
+  $(document).on("click", ".removeBtn", function () {
     var id = $(this).data("id");
-    if (confirm("¿Deseas eliminar permanentemente esta publicación?")) {
-      $("#forumResponse").html(
+    var divResponse = $(this).data("response");
+    var typeOBject = $(this).data("type");
+    if (confirm("¿Deseas eliminar permanentemente este objeto?")) {
+      $(divResponse).html(
         '<div class="alert alert-info text-center">Eliminando...</div>'
       );
       $.ajax({
         method: "POST",
         url: "core/modules/actions",
-        data: { id_topic: id, action: "remove" },
+        data: {
+          id_object: id,
+          action: "remove",
+          type: typeOBject,
+        },
         success: function (data) {
           setTimeout(function () {
-            $("#forumResponse").html(data);
+            $(divResponse).html(data);
           }, 500);
           setTimeout(function () {
             location.reload();
@@ -207,6 +259,6 @@
     }
   });
   $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
-  })
+    $('[data-toggle="tooltip"]').tooltip();
+  });
 })(jQuery);
