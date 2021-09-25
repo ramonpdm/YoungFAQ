@@ -1,7 +1,9 @@
 <?php 
 session_start(); 
-include 'core/init.php';
-include 'require/header.php'; ?>
+require 'core/classes/dbLink.php';
+require('core/modules/functions.php');
+require('require/header.php');
+?>
             <section class="content">
                 <div class="container">
                     <div class="row">
@@ -14,21 +16,18 @@ include 'require/header.php'; ?>
                             <div class="collapse" id="newtopicWrap">
                                 <div id="newtopicResponse">
                                 </div>
-                                <div class="post">
+                                <div class="post newtopic container-fluid">
                                     <form role="form" id="newtopicForm" class="form newtopic">
-                                        <div class="topwrap">
-                                            <div class="userinfo pull-left">
-                                                <div class="avatar">
-                                                    <img src="/assets/images/avatar.png" alt="">
-                                                </div>
-                                            </div>
-                                            <div class="posttext pull-left">
-                                                <div>
-                                                    <input type="text" placeholder="Escribe el título del tema" id="title" name="title" class="form-control" control-id="ControlID-4">
+                                        <div class="wrap-ut">
+                                            <div class="posttext">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <input type="text" placeholder="Escribe el título de la publicación" id="title" name="title" class="form-control"  autocomplete="off" required>
+                                                    </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-lg-12 col-md-12">
-                                                        <input placeholder="Elige una categoría..." list="categories" id="category" name="category" class="form-control" control-id="ControlID-5">
+                                                    <div class="col-sm-12">
+                                                        <input placeholder="Elige una categoría..." list="categories" id="category" name="category" class="form-control"  autocomplete="off">
                                                         <datalist id="categories">
                                                             <option value="Anuncios">
                                                             <option value="Programación">
@@ -38,9 +37,9 @@ include 'require/header.php'; ?>
                                                 </div>
                                                 <br>
                                                 <div class="row">
-                                                    <div class="col-lg-12">
+                                                    <div class="col-sm-12">
                                                         <div>
-                                                            <textarea name="content" id="content" id="name" placeholder="Contenido" class="form-control" control-id="ControlID-7"></textarea>
+                                                            <textarea name="content" id="content" id="name" placeholder="Contenido" class="form-control" required></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -50,7 +49,8 @@ include 'require/header.php'; ?>
                                         <div class="postinfobot">
                                             <div class="pull-right postreply">
                                                 <div class="pull-left">
-                                                    <button id="newtopicBtn" type="submit" class="btn btn-primary" control-id="ControlID-14">Publicar</button></div>
+                                                    <input type="hidden" name="action" value="newtopic">
+                                                    <button id="newtopicBtn" type="submit" class="btn btn-primary">Publicar</button></div>
                                                 <div class="clearfix"></div>
                                             </div>
                                             <div class="clearfix"></div>
@@ -61,42 +61,37 @@ include 'require/header.php'; ?>
                             <?php endif; ?>   
 
                             <!-- Buttons -->
-                            <div class="btn-options row">
-                                <div class="col-sm-2 ">
-                                    <div class="postadd">
-                                    <?php if (isset($_SESSION['user'])) : ?>    
-                                        <button class="btn btn-primary" control-id="ControlID-3" data-toggle="collapse" data-target="#newtopicWrap">Crear tema</button>
-                                    <?php else : ?>    
-                                        <button class="btn btn-primary" control-id="ControlID-3" data-toggle="modal" data-target="#loginModal">Iniciar Sesión</button>
-                                    <?php endif; ?>    
+                            <div class="btn-options container-fluid">
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <div class="postadd">
+                                        <?php if (isset($_SESSION['user'])) : ?>    
+                                            <button class="btn btn-primary"  data-toggle="collapse" data-target="#newtopicWrap">Crear publicación</button>
+                                        <?php else : ?>    
+                                            <button class="btn btn-primary"  data-toggle="modal" data-target="#loginModal">Iniciar Sesión</button>
+                                        <?php endif; ?>    
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-10 search">
-                                    <div class="wrap">
-                                        <form role="form" class="form">
-                                            <div class="pull-left txt">
-                                                <input id="searchInput" type="text" class="form-control" placeholder="Buscar temas" control-id="ControlID-1">
-                                            </div>
-                                            <div class="pull-right">
-                                                <button class="btn btn-default" type="button" control-id="ControlID-2">
-                                                    <i class="fa fa-search"></i>
-                                                </button>
-                                            </div>
-                                            <div class="clearfix"></div>
-                                        </form>
+                                <div class="row">
+                                    <div class="col-sm-12 search">
+                                        <div class="wrap">
+                                            <input id="searchInput" type="text" class="form-control" placeholder="Buscar publicaciones...">
+                                            <button class="btn btn-default" type="button">
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div><!-- End Buttons -->
                     
                             <div id="searchResponse" class="post sidebarblock">
-                                
-         
                             </div>
 
                             <?php
-                            $user = new User();
+                            $user = new User(false);
                             $topic = new Topic();
-                            $topic->select("*", "topics", "status = 'published'", "ORDER BY date_created DESC");
+                            $topic->select("*", "topics", "status = 'approved'", "ORDER BY reviewed_date DESC");
 
                             if ($topic->on) {
                                 $result = $topic->sql;
@@ -104,49 +99,50 @@ include 'require/header.php'; ?>
                                     while ($row = $result->fetch_assoc()) {
                             ?>
                                         <!-- POST -->
-                                        <div class="post">
-                                            <div class="wrap-ut pull-left" id="postcontent">
-                                                <div class="userinfo pull-left">
-                                                    <div class="avatar">
-                                                        <img src="/assets/images/avatar.png" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="posttext pull-left">
-                                                    <h2><a href="/forum?topic=<?php echo $row['id']; ?>"><?php echo $row['title']; ?></a></h2>
-                                                    <p><?php echo $row['content']; ?></p>
-                                                </div>
-                                                <div class="clearfix"></div>
-                                                <div class="postinfobot">
-                                                    <div class="posted pull-left">
-                                                        <?php $user->getUserName($row['id_user']); ?>
-                                                        <i class="fa fa-clock-o"></i><span><?php echo date('d M Y @ h:m A', strtotime($row['date_created'])); ?></span>
-                                                    </div>
-
-                                                    <div class="next pull-right hidden-sm hidden-xs">
-                                                        <?php $topic->getTopicCategory($row['id']); ?>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="postinfo pull-right hidden-xs hidden-sm" id="postinfo">
-                                                <div class="align-center">
-                                                    <div class="comments">
-                                                        <div class="commentbg">
-                                                            <?php $topic->getTopicComments($row['id']); ?>
-                                                            <div class="mark"></div>
+                                        <div class="post container-fluid">
+                                            <div class="wrap-ut" id="postcontent">
+                                                <div class="row">
+                                                    <div class="col-sm-2 hidden-xs hidden-sm">
+                                                        <div class="userinfo">
+                                                            <div class="avatar">
+                                                                <img src="/assets/images/avatar.png" alt="">
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="views">
-                                                        <i class="fa fa-eye"></i>
-                                                        <?php echo $row['views']; ?>
+                                                    <div class="col-sm-8 full-col">
+                                                        <div class="posttext">
+                                                            <h2><a href="/forum?topic=<?php echo $row['id']; ?>"><?php echo $row['title']; ?></a></h2>
+                                                            <p><?php echo $row['content']; ?></p>
+                                                        </div>
                                                     </div>
-                                                    <div class="time">
-                                                        <i class="fa fa-clock-o"></i>
-                                                        <?php echo getAgo($row['date_created']); ?>
+                                                    <div class="col-sm-2 hidden-xs hidden-sm d-flex-j-center-a-center" style="border-left: solid 1px #f1f1f1;"> 
+                                                        <div class="postinfo " id="postinfo">
+                                                            <div class="comments">
+                                                                <div class="commentbg">
+                                                                    <?php $topic->getTopicComments($row['id']); ?>
+                                                                    <div class="mark"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-
                                             </div>
-                                            <div class="clearfix"></div>
+
+                                            <div class="postinfobot container-fluid">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="wrap-bt">
+                                                            <div class="posted">
+                                                                <?php $user->getUserName($row['id_user'], true); ?>
+                                                                <i class="fa fa-clock-o"></i><span><?php echo getAgo($row['reviewed_date']); ?></span>
+                                                            </div>
+                                                            <div class="next hidden-xs">
+                                                                <?php $topic->getTopicCategory($row['id']); ?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div><!-- POST -->
 
                                     <?php
@@ -156,10 +152,10 @@ include 'require/header.php'; ?>
                                     <div class="post">
                                         <div class="wrap-ut not-found">
                                             <div class="posttext">
-                                                No hay temas ni discusiones para mostrar.
+                                                No hay publicaciones ni preguntas para mostrar.
                                             </div>
                                             <div class="right">
-                                                <button class="btn btn-primary" control-id="ControlID-3">Crear tema</button>
+                                                <button class="btn btn-primary" >Crear publicación</button>
                                             </div>
                                         </div>
                                     </div><!-- End POST Not Found-->
@@ -169,6 +165,8 @@ include 'require/header.php'; ?>
                         </div>
                         
                         <div class="col-lg-4 col-md-4">
+                            <?php $user->getPendingPosts(); ?>
+                            <?php $user->getRefusedPosts(); ?>
                             <?php $user->getCategories(); ?>
                             <?php $user->getUserPost(); ?>
                         </div>

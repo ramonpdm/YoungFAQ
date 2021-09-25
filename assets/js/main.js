@@ -15,7 +15,7 @@
       setTimeout(function () {
         $.ajax({
           method: "POST",
-          url: "core/modules/login",
+          url: "core/modules/actions",
           data: loginForm,
           success: function (data) {
             if (data == "") {
@@ -42,136 +42,171 @@
       e.preventDefault();
     });
     if ($("#title").val() != "" && $("#content").val() != "") {
+      if ($("#content").val().length > 50) {
+        $("#newtopicResponse").html(
+          '<div class="alert alert-info text-center">Creando...</div>'
+        );
+        var newtopicForm = $("#newtopicForm").serialize();
+        $.ajax({
+          method: "POST",
+          url: "core/modules/actions",
+          data: newtopicForm,
+          success: function (data) {
+            setTimeout(function () {
+              $("#newtopicResponse").html(data);
+              $("#newtopicForm")[0].reset();
+            }, 1000);
+            setTimeout(function () {
+              location.reload();
+            }, 2000);
+          },
+        });
+      } else {
+        $("#newtopicResponse").html(
+          '<div class="alert alert-danger text-center"><span>El contenido debe tener mínimo 50 carácteres.</span></div>'
+        );
+        setTimeout(function () {
+          $("#newtopicResponse").html('');
+        }, 2000);
+      }
+    }else{
       $("#newtopicResponse").html(
-        '<div class="alert alert-info text-center">Creando...</div>'
+        '<div class="alert alert-danger text-center"><span>Completa todos los campos correctamente.</span></div>'
       );
-      var newtopicForm = $("#newtopicForm").serialize();
-      $.ajax({
-        method: "POST",
-        url: "core/modules/newtopic",
-        data: newtopicForm,
-        success: function (data) {
-          setTimeout(function () {
-            $("#newtopicResponse").html(data);
-            $("#newtopicForm")[0].reset();
-          }, 2000);
-        },
-      });
+      setTimeout(function () {
+        $("#newtopicResponse").html('');
+      }, 2000);
     }
   });
 
   $(document).on("click", "#commentBtn", function () {
-    
     $("#commentForm").submit(function (e) {
       e.preventDefault();
     });
-    if ($("#commentContent").val() != "") {
-      $("#forumResponse").html(
+    if ($(".commentContent").val() != "") {
+      $("#commentResponse").html(
         '<div class="alert alert-info text-center">Creando...</div>'
       );
       var commentForm = $("#commentForm").serialize();
       $.ajax({
         method: "POST",
-        url: "core/modules/comment",
+        url: "core/modules/actions",
         data: commentForm,
         success: function (data) {
           setTimeout(function () {
-            $("#forumResponse").html(data);
+            $("#commentResponse").html(data);
             $("#commentForm")[0].reset();
-          }, 2000);
+          }, 500);
           setTimeout(function () {
-                location.reload();
-              }, 700);
+            location.reload();
+          }, 1000);
         },
       });
-    } 
+    }
+  });
+
+  $(document).on("click", "#approveTopicBtn", function () {
+    var id = $(this).data("id");
+    if (confirm("¿Deseas aprobar esta publicación?")) {
+      $("#forumResponse").html(
+        '<div class="alert alert-info text-center">Creando...</div>'
+      );
+      $.ajax({
+        method: "POST",
+        url: "core/modules/actions",
+        data: {
+          id_topic: id,
+          action: "approved",
+          reason: "",
+        },
+        success: function (data) {
+          setTimeout(function () {
+            $("#forumResponse").html(data);
+          }, 500);
+          setTimeout(function () {
+            location.reload();
+          }, 1000);
+        },
+      });
+    }
+  });
+
+  $(document).on("click", "#removeTopicBtn", function () {
+    var id = $(this).data("id");
+    if (confirm("¿Deseas eliminar permanentemente esta publicación?")) {
+      $("#forumResponse").html(
+        '<div class="alert alert-info text-center">Eliminando...</div>'
+      );
+      $.ajax({
+        method: "POST",
+        url: "core/modules/actions",
+        data: { id_topic: id, action: "remove" },
+        success: function (data) {
+          setTimeout(function () {
+            $("#forumResponse").html(data);
+          }, 500);
+          setTimeout(function () {
+            location.reload();
+          }, 1000);
+        },
+      });
+    }
+  });
+
+  $(document).on("click", "#refuseTopicBtn", function () {
+    if ($("#refuseReason").val() != "") {
+      var reason = $("#refuseReason").val();
+      var id = $(this).data("id");
+      $("#forumResponse").html(
+        '<div class="alert alert-info text-center">Rechazando...</div>'
+      );
+      $.ajax({
+        method: "POST",
+        url: "core/modules/actions",
+        data: {
+          id_topic: id,
+          action: "refused",
+          reason: reason,
+        },
+        success: function (data) {
+          setTimeout(function () {
+            $("#forumResponse").html(data);
+          }, 500);
+          setTimeout(function () {
+            location.reload();
+          }, 1000);
+        },
+      });
+    }
   });
 
   $(document).on("keyup", "#searchInput", function () {
     var str = $("#searchInput").val();
-    if (str.length==0) {
-      document.getElementById("searchResponse").innerHTML="";
+    if (str.length == 0) {
+      document.getElementById("searchResponse").innerHTML = "";
       return;
     }
-    var xmlhttp=new XMLHttpRequest();
-    xmlhttp.onreadystatechange=function() {
-      if (this.readyState==4 && this.status==200) {
-        document.getElementById("searchResponse").innerHTML=this.responseText;
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("searchResponse").innerHTML = this.responseText;
       }
-    }
-    xmlhttp.open("GET","core/modules/search?q="+str,true);
+    };
+    xmlhttp.open("GET", "core/modules/search?q=" + str, true);
     xmlhttp.send();
   });
 
-  /*==================================================================
-    [ Validate ]*/
-  var input = $(".validate-input .input100");
-
-  $(".validate-form").on("submit", function () {
-    var check = true;
-
-    for (var i = 0; i < input.length; i++) {
-      if (validate(input[i]) == false) {
-        showValidate(input[i]);
-        check = false;
-      }
-    }
-
-    return check;
-  });
-
-  $(".validate-form .input100").each(function () {
-    $(this).focus(function () {
-      hideValidate(this);
-    });
-  });
-
-  function validate(input) {
-    if ($(input).attr("type") == "email" || $(input).attr("name") == "email") {
-      if (
-        $(input)
-          .val()
-          .trim()
-          .match(
-            /^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{1,5}|[0-9]{1,3})(\]?)$/
-          ) == null
-      ) {
-        return false;
-      }
+  $(window).on("resize", function () {
+    var win = $(this);
+    if (win.width() < 990) {
+      $(".full-col").removeClass("col-sm-8");
+      $(".full-col").addClass("col-sm-12");
     } else {
-      if ($(input).val().trim() == "") {
-        return false;
-      }
+      $(".full-col").addClass("col-sm-8");
+      $(".full-col").removeClass("col-sm-12");
     }
-  }
-
-  function showValidate(input) {
-    var thisAlert = $(input).parent();
-
-    $(thisAlert).addClass("alert-validate");
-  }
-
-  function hideValidate(input) {
-    var thisAlert = $(input).parent();
-
-    $(thisAlert).removeClass("alert-validate");
-  }
-
-  if (!window.matchMedia) return;
-  var current = $('head > link[rel="icon"][media]');
-  $.each(current, function (i, icon) {
-    var match = window.matchMedia(icon.media);
-
-    function swap() {
-      if (match.matches) {
-        current.remove();
-        current = $(icon).appendTo("head");
-      }
-    }
-    match.addListener(swap);
-    swap();
   });
-
-  var height = $("#postcontent").height();
-  $("#postinfo").css("height", height + "px");
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
 })(jQuery);

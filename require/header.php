@@ -38,7 +38,11 @@
     
                         <div class="col  avt">
                             <div class="avatar pull-right dropdown">
-                                <a data-toggle="dropdown" href="#"><img src="/assets/images/avatar.png" alt=""></a> <b class="caret"></b>
+                                
+                                <a data-toggle="dropdown" href="#">
+                                    <?php $user = new User(false); $user->getUserName();  ?>
+                                    <img src="/assets/images/avatar.png" alt="">
+                                </a> <b class="caret"></b>
                                 
                                 <ul class="dropdown-menu" role="menu">
                                     <?php if (isset($_SESSION['user'])) : ?>
@@ -46,7 +50,7 @@
                                     <li role="presentation"><a role="menuitem" tabindex="-2" href="/logout<?php getSlug('logout'); ?>">Cerrar Sesión</a></li>
                                     <?php else : ?>   
                                     <li role="presentation"><a role="menuitem" tabindex="-1" data-toggle="modal" data-target="#loginModal">Iniciar Sesión</a></li>
-                                    <li role="presentation"><a role="menuitem" tabindex="-1" data-toggle="modal" data-target="#registerModal">Registrarse</a></li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-2" data-toggle="modal" data-target="#registerModal">Registrarse</a></li>
                                     <?php endif; ?>   
                                 </ul>
                             </div>
@@ -65,7 +69,7 @@
                     <div class="modal-content">
                         <div class="modal-header" style="display: flex; align-items: center; justify-content: space-between;">
                             <h5 class="modal-title" id="loginModalLabel">Iniciar Sesión</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <button tabindex="-3" type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -84,6 +88,7 @@
                                 
                             </div>
                             <div class="modal-footer">
+                                <input type="hidden" name="action" value="login">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                                 <button id="loginBtn" type="submit" type="button" class="btn btn-primary"><i class="fa fa-sign-in"></i> Entrar</button>
                             </div>

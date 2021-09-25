@@ -1,5 +1,5 @@
 <?php
-require('../init.php');
+require('../classes/dbLink.php');
 
 if (isset($_GET["q"])) {
     $q = $_GET["q"];
@@ -12,15 +12,14 @@ if (isset($_GET["q"])) {
         if ($result->num_rows > 0) {
 ?>
             <h3>Resultados de búsqueda</h3>
-            <div class="divline"></div>
             <?php
             while ($row = $result->fetch_assoc()) {
             ?>
-
+                <div class="divline"></div>
                 <div class="blocktxt">
                     <a href="/forum?topic=<?php echo $row["id"]; ?>" target="_blank"><?php echo $row["title"]; ?></a>
                     <div class="pull-right" style="color: #989c9e;">
-                    <?php echo date('d M Y', strtotime($row['date_created'])) . PHP_EOL; ?>
+                        <?php echo date('d M Y', strtotime($row['date_created'])) . PHP_EOL; ?>
                     </div>
                 </div>
 
