@@ -53,11 +53,7 @@ if (isset($_GET['topic']) && is_numeric($_GET['topic'])) : //Si existe el parame
                                                 <div class="row">
                                                     <div class="col-sm-12">
                                                         <input placeholder="Elige una categoría..." list="categories" id="category" name="category" class="form-control" autocomplete="off" >
-                                                        <datalist id="categories">
-                                                            <option value="Anuncios">
-                                                            <option value="Programación">
-                                                            <option value="Educación">
-                                                        </datalist>
+                                                        <?php $user->getCategories(true); ?>
                                                     </div>
                                                 </div>
                                                 <br>
@@ -355,6 +351,19 @@ if (isset($_GET['topic']) && is_numeric($_GET['topic'])) : //Si existe el parame
                                         </div>
                                     </div>
                                 </div><!-- End POST Not Found -->
+                                <!-- Buttons -->
+                                <div class="btn-options row">
+                                    <div class="col-sm-12 search">
+                                        <div class="wrap">
+                                            <input id="searchInput" type="text" class="form-control" placeholder="Intenta buscando alguna palabra clave..." >
+                                            <button class="btn btn-default" type="button">
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div><!-- End Buttons -->
+                                <div id="searchResponse" class="post sidebarblock">
+                                </div>
                             <?php endif; ?>
                         <?php else : //Si la consulta principal no tiene ningún resultado mostrar este error. 
                         ?>

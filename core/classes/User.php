@@ -19,17 +19,23 @@ class User extends dbLink
 
         $this->select("id, username, password", "users", "username = '$username' " . $password_sql);
         $result = $this->sql;
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_array();
-            return $row['id'];
-        } else {
-            return false;
+        if ($this->mysqli) {
+            if ($result) {
+                if ($result->num_rows > 0) {
+                    $row = $result->fetch_array();
+                    return $row['id'];
+                } else {
+                    return false;
+                }
+            } 
         }
     }
 
     public function cleanInputs($value) //Función para sanitizar valores que irán en la consulta SQL.
     {
-        return strip_tags($this->mysqli->real_escape_string($value));
+        if ($this->mysqli) {
+            return strip_tags($this->mysqli->real_escape_string($value), "<br><strong><b><strong>");
+        }
     }
 
     public function getUserName($id_user = null, $icon = false) //Función para obtener el nombre de la tabla usuarios por el ID.
@@ -42,29 +48,25 @@ class User extends dbLink
                 }
             }
 
-            if ($id_user == null) {
+            $this->select("name", "users", "id = $id_user");
+            $result = $this->sql;
 
-                $this->select("name", "users", "id = $id_user");
-                $result = $this->sql;
-
-                if ($result) {
-
-                    $row = $result->fetch_array();
-                    if ($icon == true) {
-                        if ($this->isAdmin($id_user)) {
-                            echo '<a class="d-flex-j-center-a-center" style="color: var(--thm-base);" href="/archive?user=' . $id_user . '"><i class="fa fa-star" style="color: var(--thm-base);"></i> <span class="user_name" style="color: var(--thm-base);">' . $row[0] . '</span></a>';
-                        } else {
-                            echo '<a class="d-flex-j-center-a-center" style="color: var(--thm-gray-1);" href="/archive?user=' . $id_user . '"><i class="fa fa-user"></i> <span class="user_name">' . $row[0] . '</span></a>';
-                        }
+            if ($result) {
+                $row = $result->fetch_array();
+                if ($icon == true) {
+                    if ($this->isAdmin($id_user)) {
+                        echo '<a class="d-flex-j-center-a-center" style="color: var(--thm-base);" href="/archive?user=' . $id_user . '"><i class="fa fa-star" style="color: var(--thm-base);"></i> <span class="user_name" style="color: var(--thm-base);">' . $row[0] . '</span></a>';
                     } else {
-                        echo '<span class="user_name">' . $row[0] . '</span>';
+                        echo '<a class="d-flex-j-center-a-center" style="color: var(--thm-gray-1);" href="/archive?user=' . $id_user . '"><i class="fa fa-user"></i> <span class="user_name">' . $row[0] . '</span></a>';
                     }
+                } else {
+                    echo '<span class="user_name">' . $row[0] . '</span>';
                 }
             }
         }
     }
 
-    public function getUserPost($id = null) //Función para obtener el Widget de Publicaciones del Usuario Logeado del Sidebar.
+    public function getUserPost() //Función para obtener el Widget de Publicaciones del Usuario Logeado del Sidebar.
     {
         if ($this->mysqli) {
             if ($this->isLogged()) {
@@ -72,12 +74,11 @@ class User extends dbLink
                 $this->select("id, id_user, title, status", "topics", "id_user = $id_user", "ORDER BY date_created DESC");
                 $result = $this->sql;
                 if ($result) { ?>
-
                     <!-- Posts Widget -->
                     <div class="sidebarblock">
                         <h3>Mis Publicaciones</h3>
                         <?php
-                        if ($result->num_rows > 1) { ?>
+                        if ($result->num_rows > 0) { ?>
                             <?php while ($row = $result->fetch_assoc()) : ?>
                                 <div class="divline"></div>
                                 <div class="blocktxt <?php echo $row['status']; ?>">
@@ -98,29 +99,48 @@ class User extends dbLink
             }
         }
 
-        public function getCategories() //Función para obtener el Widget de Categorías del Sidebar.
+        public function getCategories($datalist = false) //Función para obtener el Widget de Categorías del Sidebar.
         {
             if ($this->mysqli) {
-                $this->select("categories.id_category, categories.name, topics.status, COUNT(categories.name) AS Cantidad", "categories INNER JOIN topics ON topics.id = categories.id_topic", "topics.status = 'approved'", "GROUP by categories.name, topics.status ORDER BY Cantidad");
-                $result = $this->sql;
-                if ($result != false) {
-                    if ($result->num_rows > 0) { ?>
-                <!-- Categories Gadget -->
-                <div class="sidebarblock">
-                    <h3>Categorías</h3>
-                    <div class="divline"></div>
-                    <div class="blocktxt">
-                        <ul class="cats">
-                            <?php while ($row = $result->fetch_assoc()) {
-                            ?>
-                                <li><a href="/archive?category=<?php echo $row['id_category']; ?>"><?php echo $row['name']; ?><span class="badge pull-right"><?php echo $row['Cantidad']; ?></span></a></li>
-                            <?php
-                            }
-                            ?>
-                        </ul>
-                    </div>
-                </div><!-- End Categories Gadget -->
-            <?php
+                if ($datalist) {
+
+                    $this->select("*", "categories");
+                    $result = $this->sql;
+                    $row = $result->fetch_array();
+                    if ($result) { ?>
+                <datalist id="categories">
+                    <?php if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) { ?>
+                            <option value="<?php echo $row['name']; ?>">
+                        <?php     }
+                        } ?>
+                </datalist>
+                <?php
+
+                    }
+                } else {
+
+                    $this->select("categories.id_category, categories.name, topics.status, COUNT(categories.name) AS Cantidad", "categories INNER JOIN topics ON topics.id = categories.id_topic", "topics.status = 'approved'", "GROUP by categories.name, topics.status ORDER BY Cantidad");
+                    $result = $this->sql;
+                    if ($result != false) {
+                        if ($result->num_rows > 0) { ?>
+                    <!-- Categories Gadget -->
+                    <div class="sidebarblock">
+                        <h3>Categorías</h3>
+                        <div class="divline"></div>
+                        <div class="blocktxt">
+                            <ul class="cats">
+                                <?php while ($row = $result->fetch_assoc()) {
+                                ?>
+                                    <li><a href="/archive?category=<?php echo $row['id_category']; ?>"><?php echo $row['name']; ?><span class="badge pull-right"><?php echo $row['Cantidad']; ?></span></a></li>
+                                <?php
+                                }
+                                ?>
+                            </ul>
+                        </div>
+                    </div><!-- End Categories Gadget -->
+                <?php
+                        }
                     }
                 }
             }

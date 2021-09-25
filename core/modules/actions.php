@@ -5,7 +5,7 @@ session_start();
 if ($_SERVER["REQUEST_METHOD"] == "POST") { //Comprobamos que hemos recibido una solicitud POST.
 	$action = $_POST['action'];
 	if (isset($action)) {
-		$topic = new Topic();
+		$topic = new Topic(false);
 		$user = new User();
 
 		//Aquí declaramos todas las variables (si existen) que se utilizarán en cada acción. Todas con la primera letra mayúscula (cuestión de estética).
@@ -81,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { //Comprobamos que hemos recibido una
 						<?php
 						} else {
 						?>
-							<div class="alert alert-success text-center">
+							<div class="alert alert-danger text-center">
 								<span>Ha habido un error. Contacte a un administrador.</span>
 							</div>
 <?php
@@ -189,7 +189,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { //Comprobamos que hemos recibido una
 							'reason' 		=> $reason,
 							'reviewed_by' 	=> $id_user
 						), 'id  = ' . $id_object);
-						echo 'mamaguebo';
 					}
 
 					if ($type == 'comments') {

@@ -28,11 +28,7 @@ require('require/header.php');
                                                 <div class="row">
                                                     <div class="col-sm-12">
                                                         <input placeholder="Elige una categoría..." list="categories" id="category" name="category" class="form-control"  autocomplete="off">
-                                                        <datalist id="categories">
-                                                            <option value="Anuncios">
-                                                            <option value="Programación">
-                                                            <option value="Educación">
-                                                        </datalist>
+                                                        <?php $user->getCategories(true); ?>
                                                     </div>
                                                 </div>
                                                 <br>
@@ -98,6 +94,7 @@ require('require/header.php');
                             if ($topic->on) {
                                 $result = $topic->sql;
                                 if ($result) {
+                                if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
                             ?>
                                         <!-- POST -->
@@ -157,13 +154,23 @@ require('require/header.php');
                                                 No hay publicaciones ni preguntas para mostrar.
                                             </div>
                                             <div class="right">
-                                                <button class="btn btn-primary" >Crear publicación</button>
+                                            <?php if ($user->isLogged()) : ?>    
+                                            <button class="btn btn-primary"  data-toggle="collapse" data-target="#newtopicWrap">Crear publicación</button>
+                                                <?php else : ?>    
+                                                    <button class="btn btn-primary"  data-toggle="modal" data-target="#loginModal">Iniciar Sesión</button>
+                                                    <div class="separator"></div>
+                                                    <button class="btn btn-secondary"  data-toggle="modal" data-target="#registerModal">Registarse</button>
+                                                <?php endif; ?>    
                                             </div>
                                         </div>
                                     </div><!-- End POST Not Found-->
 
-                            <?php }
+                            <?php
+                             }
                             } ?>
+                         <?php 
+                        } 
+                        ?>
                         </div>
                         
                         <div class="col-lg-4 col-md-4">
