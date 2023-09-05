@@ -1,4 +1,2 @@
-TDP-Portal.code-workspace
-test
-portal
-Email.html
+app/Tests
+app/vendor
