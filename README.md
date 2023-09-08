@@ -8,7 +8,7 @@ Foro de discusión o para respuestas a preguntas frecuentes.
 
 **Server:** Apache/2.4.56, PHP 8.2.4, Composer, MySQL
 
-Estructura principal basada en Modelos, Vistas y Controladores (MVC). Se implementan Helpers, Repositories, Excepcions, etcétera.
+Estructura principal basada en Modelos, Vistas y Controladores (MVC). Se implementan Helpers, Repositories, Exceptions, etcétera.
 
 Sistema de registro de usuarios y de inicio de sesión.
 
