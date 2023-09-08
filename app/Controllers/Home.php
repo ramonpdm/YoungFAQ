@@ -7,14 +7,14 @@ use App\Repositories\Topic;
 
 class Home extends App
 {
-    public function index()
+    protected function index()
     {
         try {
             $topicRepo = new Topic();
             $topics = $topicRepo->findAll();
-            return $this->renderView('', ['topics' => $topics]);
+            return $this->renderView('Pages/Home', ['topics' => $topics]);
         } catch (UserNotFoundException $e) {
-            return $this->renderView('', ['error' => $e->getMessage()]);
+            return $this->renderView('Pages/Error', ['error' => $e->getMessage()]);
         }
     }
 }

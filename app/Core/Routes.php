@@ -2,58 +2,60 @@
 
 namespace App\Core;
 
+use App\Core\Exceptions\RouteException;
+
 class Routes
 {
-    public static function getRoutes()
-    {
-        return [
-            //            'GET /' => ['controller'=>'IndexController', 'action'=> 'index'],
-            //            'POST /login' =>['controller'=>'AuthController','action'=>'login']
-            //            'GET /register' =>[
-            //                'controller'=>'RegisterController',
-            //                    ],
-            //            'GET /logout' =>  ['controller'=>'LogoutController',],
-            //            'GET /user/profile/{id}'=>['controller'=>'UserController','action'=>'showProfile'],
-            //            'GET /admin/users' =>   ['controller'=>'AdminController',    'action'=>'getUsersList'],
-            //            'GET /user/profile/{id}'=>['controller'=>'UserController','action'=>'showProfile'],
-            //            'GET /users/list' =>   ['controller'=>'UserController',    'action'=>'listUsers'],
-            //            'GET /user/profile/{id}'=>['controller'=>'UserController','action'=>'showProfile'],
-            //            'GET /users/create' =>   ['controller'=>'UsersController@getCreateForm'],
-            //            'POST /users/' =>    ['controller'=>'UsersController@postStoreUser'],
-            //            'GET /users/{id}/edit' =>     ['controller'=>'UsersController@getUserEditPage', 'params'=>['id']],
-            //            'GET /posts/{id}' =>     ['controller'=>'PostsController@showPostById'],
-            //            'GET /posts/create' =>      ['controller'=>'PostsController@getPostCreateForm'],
-            //            'GET /posts/create' =>      ['controller'=>'PostsController@getPostCreateForm'],
-            //            'GET /posts' =>      ['controller'=>'PostsController@getAllPosts'],
-            //            'GET /posts/create' =>       ['controller'=>'PostsController@getPostCreateForm'],
-            //            'GET /posts/create' =>       ['controller'=>'PostsController@getPostCreatePage'],
-            //            'GET /posts' =>          ['controller'=>'PostsController@getAllPosts'],
-            //            'GET /posts' =>              ['controller'=>'PostsController@getAllPosts'],
-            //            'GET /posts/{id}/edit' =>         ['controller'=>'PostsController@getPostEditPage'],
-            //            'GET /posts' =>                  ['controller'=>'PostsController@getAllPosts'],
-            //            'GET /posts' =>                      ['controller'=>'PostsController@getAllPosts'],
-            //            'GET /posts' =>                      ['controller'=>'PostsController@getAllPosts'],
-            //            'GET /posts' =>                      ['controller'=>'PostsController@getAllPosts'],
-            //            'GET /posts' =>                      ['controller'=>'PostsController@getAllPosts'],
+    private $routes;
+    private $current_method;
+    private $current_controller;
+    private $current_view;
 
-        ];
+    public function __construct($routes)
+    {
+        $this->routes = $routes;
+        $this->current_method = $_SERVER['REQUEST_METHOD'];
+        $this->validate();
     }
 
-    public static function init($namespace)
+    private function validate()
     {
-        // Verificar si existe el parámetro del controlador
-        if (isset($_GET['route']) && !empty($_GET['route'])) {
+        foreach ($this->routes as $route => $controller) {
+            $route = explode(' ', $route);
 
-            // Primera letra mayúscula
-            $route =  ucfirst($_GET['route']);
+            if (count($route) < 2)
+                throw new RouteException('No se especificó correctamente la ruta');
 
-            // Convertir de plural a singular
-            $controller =  (substr($route, -1) === 's' ? substr($route, 0, -1) : $route);
+            if (!isset($_GET['route']))
+                throw new RouteException('La ruta no ha sido establecida');
 
-            // Retornar el nombre del controlador
-            // que manejará esta ruta
-            if (class_exists($namespace . $controller))
-                return $namespace . $controller;
+            if (count($controller) < 2)
+                throw new RouteException('No se especificó el controlador y la función que manejará la ruta correctamente');
+
+            if (!class_exists($controller[0]))
+                throw new RouteException('El controlador ' . $controller[0] . ' no existe');
+
+            if (!method_exists($controller[0], $controller[1]))
+                throw new RouteException('La vista ' . $controller[1] . ' no existe');
+
+            $url_route = $_GET['route'] === 'index.php' ? '/' : '/' . $_GET['route'];
+            if ($route[0] === $this->current_method && $route[1] ===  $url_route) {
+                $this->current_controller = $controller[0];
+                $this->current_view = $controller[1];
+                return;
+            }
         }
+
+        return null;
+    }
+
+    public function controller()
+    {
+        return $this->current_controller;
+    }
+
+    public function view()
+    {
+        return $this->current_view;
     }
 }
