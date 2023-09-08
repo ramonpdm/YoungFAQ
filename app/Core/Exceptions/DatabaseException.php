@@ -12,7 +12,11 @@ class DatabaseException extends Exception
         parent::__construct($message, $code, $previous);
     }
 
-    // custom string representation of object
+    /** 
+     * Custom string representation of object
+     * 
+     * @return string
+     */
     public function __toString()
     {
         return '<strong>' . __CLASS__ . ": [{$this->code}]:</strong> {$this->message}\n";
