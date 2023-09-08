@@ -32,13 +32,15 @@ class Topic extends Model
     public function __construct($data = null)
     {
         $userRepo = new UserRepo();
-        $this->author = $userRepo->find($this->created_by);
+        $author = $userRepo->find($this->created_by);
 
         $categoriesRepo = new TopicCategoriesRepo();
         $this->categories = $categoriesRepo->findTopicCategories($this->id);
 
-        if ($this->author === null)
+        if ($author === null)
             throw new UserNotFoundException('No se pudo obtener los datos del creador de la pulicación <b><i>"' . $this->getTitle() . '"</b></i> correctamente.  <b>ID del Creador: ' . $this->created_by . '</b>');
+
+        $this->author = $author;
     }
 
     /** 
