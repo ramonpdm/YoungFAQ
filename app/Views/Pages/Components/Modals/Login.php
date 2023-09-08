@@ -1,5 +1,5 @@
 <!-- Login Modal -->
-<div class="modal fade"  d-block show id="loginModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+<div class="modal fade" id="loginModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header" style="display: flex; align-items: center; justify-content: space-between;">
@@ -14,7 +14,7 @@
                     <div class="mb-3 row">
                         <div class="col">
                             <label for="username" class="form-label">Nombre de Usuario</label>
-                            <input type="text" class="form-control" name="username" id="inputName" placeholder="Usuario" autofocus required>
+                            <input type="text" class="form-control" name="username" id="username" placeholder="Usuario" autofocus required>
                         </div>
                     </div>
 

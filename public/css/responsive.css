@@ -1,11 +1,8 @@
-
-
-
 /*-----------------------------------------------------------------*/
 /*--- Extra small devices (less 767px) ---*/
 
 @media (max-width: 767px) {
-    
+
     /*--- index.html ---*/
     .container-fluid {
         padding: 0;
@@ -29,6 +26,7 @@
         padding: 7px;
         min-width: 35px;
     }
+
     .post .time i {
         display: block;
         margin-top: 5px;
@@ -43,19 +41,12 @@
         left: 36%;
     }
 
-    .post .time,
-    .post .views,
-    .post .views {
-    }
-
-
     .headernav {
         height: auto;
     }
 
     .avt {
-        height: auto; 
-        margin-bottom: 15px;
+        height: auto;
     }
 
     .selecttopic select {
@@ -112,6 +103,7 @@
         margin: 0;
         padding: 0;
     }
+
     /* end 2*/
 
     /*--- 03_new_topic.html ---*/
@@ -119,7 +111,7 @@
         margin-bottom: 20px;
     }
 
-    .accsection .htext, 
+    .accsection .htext,
     .accsection .hnotice {
         width: 100%;
     }
@@ -131,12 +123,14 @@
     .postinfobot .lblfch {
         width: 80%;
     }
+
     .postinfobot .lblfch label {
         line-height: normal;
         padding-top: 15px;
         padding-bottom: 15px;
 
     }
+
     /* end 3 */
 }
 
@@ -167,6 +161,7 @@
         padding: 7px;
         min-width: 35px;
     }
+
     .post .time i {
         display: block;
         margin-top: 5px;
@@ -186,7 +181,7 @@
     }
 
     .avt {
-        height: auto; 
+        height: auto;
         margin-bottom: 15px;
     }
 
@@ -210,7 +205,7 @@
     .dropdown.avatar b.caret {
         color: #363838;
     }
-    
+
 }
 
 /*-----------------------------------------------------------------*/
@@ -228,6 +223,7 @@
         left: auto;
         right: 0;
     }
+
     ul.socialicons {
         margin-bottom: 0;
     }
@@ -237,8 +233,10 @@
 
         width: 100%;
     }
+
     /* end 2 */
 }
+
 /*-----------------------------------------------------------------*/
 /*--- Large devices (more 1200px) ---*/
 @media (min-width: 1201px) {

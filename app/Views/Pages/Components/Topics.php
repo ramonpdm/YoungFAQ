@@ -5,21 +5,14 @@
               <div class="wrap-ut" id="postcontent">
 
                   <div class="row">
-                      <div class="col-sm-2 d-none d-sm-block d-sm-none d-md-block">
-                          <div class="userinfo">
-                              <div class="avatar">
-                                  <img src="/YoungFAQ/public/images/avatar.png" alt="">
-                              </div>
-                          </div>
-                      </div>
-                      <div class="col-sm-8 full-col">
+                      <div class="col-sm-10 full-col">
                           <div class="posttext" style="overflow: hidden;">
                               <h2><a href="/forum?topic=<?= $topic->getID(); ?>"><?= $topic->getTitle(); ?></a></h2>
                               <p style="max-height: 100px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;"><?= $topic->getContent(); ?></p>
                           </div>
                       </div>
-                      <div class="col-sm-2 d-none d-sm-flex d-sm-none d-md-flex d-flex-j-center-a-center" style="border-left: solid 1px #f1f1f1;">
-                          <div class="postinfo " id="postinfo">
+                      <div class="col-sm-2 d-none d-sm-none d-xs-none d-sm-flex d-md-flex d-flex-j-center-a-center" style="border-left: solid 1px #f1f1f1;">
+                          <div class="postinfo" id="postinfo">
                               <div class="comments">
                                   <div class="commentbg">
                                       <?= $topic->getCommentsCount() ?>
@@ -37,7 +30,10 @@
                       <div class="col-sm-12">
                           <div class="wrap-bt">
                               <div class="posted">
-                                  <?= App\Helpers\UserPresentation::username($topic->getAuthor()); ?>
+                                  <div class="avatar">
+                                      <img src="/YoungFAQ/public/images/avatar.png" alt="Profile pic" class="d-none d-xs-none d-sm-none d-lg-block">
+                                      <?= App\Helpers\UserPresentation::username($topic->getAuthor()); ?>
+                                  </div>
                                   <i class="fa fa-clock-o"></i><span>
                                       <?= App\Core\Functions\getAgo($topic->getCreatedAt()); ?>
                                   </span>

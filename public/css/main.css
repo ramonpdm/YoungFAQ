@@ -120,30 +120,32 @@ ul.socialicons li a:hover {
 
 
 /*--- Avatar ---*/
+.avt,
+.avatar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.avatar .user {
+    white-space: nowrap;
+}
+
+.avatar:hover .user {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
 .avt {
-    margin-top: 16px;
-    height: 38px;
-}
-
-.avt button {
-    height: 38px;
-    border: none;
-    box-shadow: none;
-    color: #ffffff;
-    font-size: 14px;
-    font-family: 'Open Sans Bold', sans-serif;
-    padding-left: 30px;
-    padding-right: 30px;
-    background-color: #1abc9c;
-}
-
-.avt a {
     text-decoration: none;
 }
 
-.avt a .user_name {
+.avt .fullname {
     margin-right: 10px;
+}
 
+.avt .pic {
+    margin-right: 10px;
 }
 
 .avt .btn-primary:hover,
@@ -151,11 +153,8 @@ ul.socialicons li a:hover {
 .avt .btn-primary:active,
 .avt .btn-primary.active {
     background-color: #1abc9c;
-
-
     border: none;
     box-shadow: none;
-
 }
 
 .env {
@@ -188,31 +187,13 @@ ul.socialicons li a:hover {
     border: solid 2px #ffffff;
 }
 
-.dropdown.avatar .status {
-    right: 14px;
+.avatar .dropdown .dropdown-item:active a {
+    color: white !important;
 }
 
-.caretl {
-    color: #363838;
-    font-size: 14px;
-    line-height: 38px;
-    padding: 0 15px;
+.avatar .dropdown-menu {
+    z-index: 999;
 }
-
-
-.avatar .green {
-    background-color: #80d3ab;
-}
-
-.avatar .red {
-    background-color: #f27777;
-}
-
-.avatar .yellow {
-    background-color: #ecd346;
-}
-
-
 
 /*-----------------------------------------------------------------*/
 /*--- Content ---*/
@@ -439,7 +420,7 @@ td.chbox {
 .post .wrap-ut {
     width: 100%;
     display: block;
-
+    overflow: hidden;
 }
 
 .post .userinfo {
@@ -479,7 +460,7 @@ td.chbox {
 
 .post .posttext {
     /* width: 85%; */
-    /* padding-right: 30px; */
+    padding-left: 30px;
     padding-top: 20px;
     padding-bottom: 15px;
 
@@ -566,12 +547,12 @@ td.chbox {
 }
 
 /*--- Topic ---*/
-.topic .userinfo {
+.topic .posttext .userinfo {
     width: 12%;
 }
 
-.topic .posttext {
-    width: 88%;
+.topic .posted .userinfo {
+    width: 12%;
 }
 
 .postinfobot {
@@ -597,7 +578,6 @@ td.chbox {
     color: var(--thm-gray-1);
 }
 
-
 .postinfobot .posted {
     display: flex;
     align-items: center;
@@ -617,6 +597,10 @@ td.chbox {
     font-size: 18px;
     color: var(--thm-gray-1);
     padding-right: 8px;
+}
+
+.postinfobot .avatar img{
+    margin-right: 10px;
 }
 
 .postinfobot .next {
