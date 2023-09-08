@@ -26,40 +26,31 @@
         <div class="headernav">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-1 col-xs-3 col-sm-2 col-md-2 logo ">
-                        <a href=""><img src="public/images/logo.png" alt=""></a>
+                    <div class="col logo">
+                        <a href="<?= APP_URL ?>/"><img src="public/images/logo.png" alt=""></a>
                     </div>
-                    <div class="col-lg-7 col-xs-4 col-sm-5 col-md-6 selecttopic">
-                        <div class="dropdown d-none d-sm-block d-sm-none d-md-block">
-                            <a href="">YoungFAQ</a>
-                        </div>
+                    <div class="col-lg-8 col-xs-4 col-sm-5 col-md-6 d-none d-sm-block d-sm-none d-md-block selecttopic">
+                        <a href="<?= APP_URL ?>/">YoungFAQ</a>
                     </div>
-
-                    <div class="col  avt">
-                        <div class="avatar pull-right dropdown">
-
-                            <a data-toggle="dropdown" href="#">
-                                <?php // $user->getUserName(); 
-                                ?>
-                                <img src="public/images/avatar.png" alt="">
-                            </a>
-
-                            <i class="fa fa-caret-down"></i>
+                    <div class="col avt">
+                        <div class="avatar pull-right h-100">
+                            <span class="user" data-toggle="dropdown">
+                                <?= App\Helpers\UserPresentation::FullName(App\Models\User::session()); ?>
+                                <img class="pic" src="public/images/avatar.png" alt="Profile picture">
+                                <i class="fa fa-caret-down"></i>
+                            </span>
 
                             <ul class="dropdown-menu" role="menu">
-                                <?php  //if ($user->isLogged()) : 
-                                ?>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="logout<?php  //getSlug('logout'); 
-                                                                                                        ?>">Cerrar Sesión</a></li>
-                                <?php   // else : 
-                                ?>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" data-toggle="modal" data-target="#loginModal">Iniciar Sesión</a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-2" data-toggle="modal" data-target="#registerModal">Registrarse</a></li>
-                                <?php  // // endif; 
-                                ?>
+                                <?php if (App\Models\User::isLogged()) : ?>
+                                    <a class="dropdown-item" role="menuitem" tabindex="-1" href="<?= APP_URL ?>/profile<">Perfil</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" role="menuitem" tabindex="-2" href="<?= APP_URL ?>/logout">Cerrar Sesión</a>
+                                <?php else : ?>
+                                    <a class="dropdown-item" role="menuitem" tabindex="-1" data-toggle="modal" data-target="#loginModal">Iniciar Sesión</a>
+                                    <a class="dropdown-item" role="menuitem" tabindex="-2" data-toggle="modal" data-target="#registerModal">Registrarse</a>
+                                <?php endif ?>
                             </ul>
                         </div>
-
                         <div class="clearfix"></div>
                     </div>
                 </div>

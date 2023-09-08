@@ -37,4 +37,20 @@ class UserPresentation
 
         return $html;
     }
+    /** 
+     * Devolver el nombre completo de un 
+     * usuario como un span en HTML.
+     * 
+     * @param User $user
+     * @return string
+     */
+    public static function FullName(User $user)
+    {
+        // Devolver una cadena vacía si no hay datos del usuario
+        if (!is_object($user) || empty($user)) {
+            return '';
+        }
+
+        return '<span class="fullname">' . $user->getFullName() . '</span>';
+    }
 }
