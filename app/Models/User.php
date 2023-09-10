@@ -16,7 +16,7 @@ class User extends Model
     const SESSION_LABEL_FIST_NAME = 'USER_FNAME';
     const SESSION_LABEL_LAST_NAME = 'USER_LNAME';
     const SESSION_LABEL_FULL_NAME = 'USER_FULL_NAME';
-    const SESSION_LABEL_LEVE = 'USER_LEVEL';
+    const SESSION_LABEL_LEVEL = 'USER_LEVEL';
 
     // Internal Database Props
     protected $id;
@@ -104,7 +104,7 @@ class User extends Model
         $_SESSION[self::SESSION_LABEL_FIST_NAME]   = $this->first_name;
         $_SESSION[self::SESSION_LABEL_LAST_NAME]   = $this->last_name;
         $_SESSION[self::SESSION_LABEL_FULL_NAME]   = $this->getFullName();
-        $_SESSION[self::SESSION_LABEL_LEVE]       = $this->level;
+        $_SESSION[self::SESSION_LABEL_LEVEL]        = $this->level;
 
         return true;
     }
@@ -134,7 +134,7 @@ class User extends Model
             $_SESSION[self::SESSION_LABEL_FIST_NAME],
             $_SESSION[self::SESSION_LABEL_LAST_NAME],
             $_SESSION[self::SESSION_LABEL_FULL_NAME],
-            $_SESSION[self::SESSION_LABEL_LEVE]
+            $_SESSION[self::SESSION_LABEL_LEVEL]
         )) {
             if (
                 !empty($_SESSION[self::SESSION_LABEL_ID])
@@ -142,7 +142,7 @@ class User extends Model
                 && !empty($_SESSION[self::SESSION_LABEL_FIST_NAME])
                 && !empty($_SESSION[self::SESSION_LABEL_LAST_NAME])
                 && !empty($_SESSION[self::SESSION_LABEL_FULL_NAME])
-                && !empty($_SESSION[self::SESSION_LABEL_LEVE])
+                && !empty($_SESSION[self::SESSION_LABEL_LEVEL])
             )
                 return true;
         }
