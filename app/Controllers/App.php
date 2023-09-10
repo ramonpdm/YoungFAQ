@@ -3,8 +3,6 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
-use App\Controllers\Home;
-use App\Controllers\Login;
 
 class App extends Controller
 {
@@ -26,6 +24,7 @@ class App extends Controller
         return [
             'GET /' => [Home::class, 'index'],
             'GET /logout' => [Login::class, 'logout'],
+            'GET /topic' => [Topic::class, 'view'],
             'POST /login' => [Login::class, 'index'],
             'POST /register' => [Login::class, 'register'],
         ];

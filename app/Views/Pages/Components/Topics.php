@@ -7,7 +7,7 @@
                   <div class="row">
                       <div class="col-sm-10 full-col">
                           <div class="posttext" style="overflow: hidden;">
-                              <h2><a href="/forum?topic=<?= $topic->getID(); ?>"><?= $topic->getTitle(); ?></a></h2>
+                              <h2><a href="<?= APP_URL ?>/topic?id=<?= $topic->getID(); ?>"><?= $topic->getTitle(); ?></a></h2>
                               <p style="max-height: 100px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;"><?= $topic->getContent(); ?></p>
                           </div>
                       </div>
@@ -34,7 +34,8 @@
                                       <img src="/YoungFAQ/public/images/avatar.png" alt="Profile pic" class="d-none d-xs-none d-sm-none d-lg-block">
                                       <?= App\Helpers\UserPresentation::username($topic->getAuthor()); ?>
                                   </div>
-                                  <i class="fa fa-clock-o"></i><span>
+                                  <span class="time flex-m">
+                                      <i class="fa fa-clock-o"></i>
                                       <?= App\Core\Functions\getAgo($topic->getCreatedAt()); ?>
                                   </span>
                               </div>

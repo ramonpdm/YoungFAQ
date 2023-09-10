@@ -32,4 +32,17 @@ class Topic extends Query
     {
         return $this->select("SELECT * FROM $this->db_table WHERE created_by = :id_user", [[":id_user", htmlspecialchars(strip_tags($id_user))]], $limit);
     }
+
+    /** 
+     * Devuelve una sola publicación por su ID.
+     * 
+     * @param int $id       ID del registro
+     * @param array $limit  Límites de los registros
+     * 
+     * @return \App\Models\Topic|null     
+     */
+    public function find($id)
+    {
+        return $this->select("SELECT *, (SELECT COUNT(*) FROM comments WHERE comments.id_topic = $this->db_table.id ) AS comments_count FROM $this->db_table")[0] ?? null;
+    }
 }
