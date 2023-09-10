@@ -13,7 +13,7 @@ class TopicCategories extends Query
      * Devuelve una lista de categorías
      * según su Topic.
      * 
-     * @param string $id_topic
+     * @param int $id_topic
      * 
      * @return \App\Models\Category[]|null 
      */
