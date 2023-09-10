@@ -55,7 +55,8 @@ class Query extends Database
     /** 
      * Inserta un registro.
      * 
-     * @return array|bool
+     * @return int El ID del último registro insertado,
+     *             o '0' si no se insertó nada.
      */
     public function insert($data)
     {
@@ -70,9 +71,7 @@ class Query extends Database
             $set[] = $key . ' = '  . ':' . $key;
         }
 
-        $bindings[] =  [':created_by',  $_SESSION[User::SESSION_LABEL_ID]];
-
-        return $this->sql_exec("INSERT INTO $this->db_table SET " . implode(', ', $set), $bindings);
+        return $this->sql_exec("INSERT INTO $this->db_table SET " . implode(', ', $set), $bindings, [], true);
     }
 
     /** 

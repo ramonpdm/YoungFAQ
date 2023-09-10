@@ -27,6 +27,7 @@ class App extends Controller
             'GET /' => [Home::class, 'index'],
             'GET /logout' => [Login::class, 'logout'],
             'POST /login' => [Login::class, 'index'],
+            'POST /register' => [Login::class, 'register'],
         ];
     }
 }

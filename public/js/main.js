@@ -14,7 +14,7 @@
 			url: "login",
 			data: loginForm,
 			success: function (data) {
-				$("#loginForm .response").html('<div class="alert alert-success text-center">¡Inicio de sesión exitoso!</div>')
+				$("#loginForm .response").html('<div class="alert alert-success text-center">' + data.message + "</div>")
 
 				setTimeout(function () {
 					$("#loginModal").modal("toggle")
@@ -45,18 +45,19 @@
 			url: "register",
 			data: registerForm,
 			success: function (data) {
-				$("#registerForm .response").html('<div class="alert alert-success text-center">Registro exitoso!</div>')
+				$("#registerForm .response").html('<div class="alert alert-success text-center">' + data.message + "</div>")
 
 				setTimeout(function () {
 					$("#registerModal").modal("toggle")
+					location.reload()
 				}, 500)
 			},
 			error: function (error) {
 				try {
 					var data = JSON.parse(error.responseText)
-					$("#loginForm .response").html('<div class="alert alert-danger text-center">' + data.message + "</div>")
+					$("#registerForm .response").html('<div class="alert alert-danger text-center">' + data.message + "</div>")
 				} catch (error) {
-					$("#loginForm .response").html('<div class="alert alert-danger text-center">' + error + "</div>")
+					$("#registerForm .response").html('<div class="alert alert-danger text-center">' + error + "</div>")
 				}
 			},
 		})

@@ -27,7 +27,7 @@ class Database
             if (!$this->model)
                 throw new Exception('La propiedad <b>$model</b> no ha sido establecida en la clase: <b>' . get_class($this) . '</b>');
         } catch (PDOException $e) {
-            throw new DatabaseException($e->getMessage());
+            throw new DatabaseException($e->getMessage(), $e->getCode());
         }
     }
 
@@ -56,21 +56,23 @@ class Database
             // retornar un array asociativo
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            throw new DatabaseException($e->getMessage());
+            throw new DatabaseException($e->getMessage(), $e->getCode());
         }
     }
 
     /** 
-     * Ejecuta una consulta y retorna un objeto 
-     * \PDOStatement.
+     * Ejecuta una comando SQL.
      * 
-     * @param string $query     Consulta SQL.
-     * @param array  $params    Párametros a Bindear
+     * @param string    $query          Consulta SQL.
+     * @param array     $params         Párametros a bindear
+     * @param array     $limit          Límites de registros
+     * @param bool      $lastInsertId   Retornar o no, el ID del
+     *                                  último registro insertado.
      * 
      * @throws Exception
-     * @return PDOStatement
+     * @return PDOStatement|false|int
      */
-    protected function sql_exec($query = "", $params = [], $limit = [])
+    protected function sql_exec($query = "", $params = [], $limit = [], $lastInsertId = false)
     {
         try {
             // Si hay limites, establecerlos
@@ -88,9 +90,13 @@ class Database
             }
 
             $stmt->execute();
+
+            if ($lastInsertId)
+                return $this->conn->lastInsertId();
+
             return $stmt;
         } catch (PDOException $e) {
-            throw new DatabaseException($e->getMessage());
+            throw new DatabaseException($e->getMessage(), $e->getCode());
         }
     }
 
