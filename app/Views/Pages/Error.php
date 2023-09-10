@@ -19,14 +19,7 @@
             </div>
 
             <div class="col-lg-4 col-md-4">
-                <?php  // $user->getPendingPosts(); 
-                ?>
-                <?php  // $user->getRefusedPosts(); 
-                ?>
-                <?php  // $user->getCategories(); 
-                ?>
-                <?php  // $user->getUserPost(); 
-                ?>
+                <?= $this->renderView('Pages/Components/Sidebar') ?>
             </div>
 
         </div>
