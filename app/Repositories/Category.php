@@ -28,6 +28,6 @@ class Category extends Query
      */
     public function findByName($name)
     {
-        return $this->select("SELECT * FROM $this->db_table WHERE name = :name", [[":name", $name]])[0] ?? null;
+        return $this->select("SELECT * FROM $this->db_table WHERE UPPER(name) = :name", [[':name', mb_strtoupper($name)]])[0] ?? null;
     }
 }
