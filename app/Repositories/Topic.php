@@ -36,13 +36,12 @@ class Topic extends Query
     /** 
      * Devuelve una sola publicación por su ID.
      * 
-     * @param int $id       ID del registro
-     * @param array $limit  Límites de los registros
+     * @param int $id 
      * 
      * @return \App\Models\Topic|null     
      */
     public function find($id)
     {
-        return $this->select("SELECT *, (SELECT COUNT(*) FROM comments WHERE comments.id_topic = $this->db_table.id ) AS comments_count FROM $this->db_table")[0] ?? null;
+        return $this->select("SELECT *, (SELECT COUNT(*) FROM comments WHERE comments.id_topic = $this->db_table.id ) AS comments_count FROM $this->db_table WHERE id = :id", [[':id', $id]])[0] ?? null;
     }
 }
