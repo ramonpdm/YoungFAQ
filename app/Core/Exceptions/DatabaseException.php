@@ -7,9 +7,12 @@ use Throwable;
 
 class DatabaseException extends Exception
 {
-    public function __construct($message, $code = 0, Throwable $previous = null)
+    protected $code;
+
+    public function __construct($message, $code = '', Throwable $previous = null)
     {
-        parent::__construct($message, $code, $previous);
+        parent::__construct($message, 0, $previous);
+        $this->code = $code;
     }
 
     /** 
