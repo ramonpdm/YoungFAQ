@@ -71,7 +71,7 @@ class Login extends App
                 if ($user->setParams() && $user->isLogged())
                     return HTTP::sendOutput(['message' => '¡Registro exitoso!']);
             } catch (\App\Core\Exceptions\DatabaseException $e) {
-                if ($e->getCode() === 23000)
+                if ($e->getCode() == 23000)
                     return HTTP::sendOutput(['message' => 'Este usuario ya está ocupado, por favor, elige otro.'], 400);
                 return HTTP::sendOutput(['message' => 'Hubo un error en el sistema'], 500);
             } catch (\Exception $e) {
