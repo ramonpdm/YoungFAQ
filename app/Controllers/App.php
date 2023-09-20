@@ -27,6 +27,7 @@ class App extends Controller
             'GET /topic' => [Topic::class, 'view'],
             'POST /login' => [Login::class, 'index'],
             'POST /register' => [Login::class, 'register'],
+            'POST /topic' => [Topic::class, 'create'],
         ];
     }
 }
