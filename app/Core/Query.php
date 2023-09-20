@@ -11,8 +11,7 @@ class Query extends Database
     protected $db_table = '';
 
     /** 
-     * Devuelve todos los registros y
-     * convierte el arreglo de datos
+     * Convierte los registros obtenidos
      * en un arreglo de objetos.
      * 
      * @param string $query Consulta SQL
@@ -45,11 +44,11 @@ class Query extends Database
      * @param int $id       ID del registro
      * @param array $limit  Límites de los registros
      * 
-     * @return array     
+     * @return array|null     
      */
     public function find($id)
     {
-        return $this->select("SELECT * FROM $this->db_table WHERE id = :id", [[":id", htmlspecialchars(strip_tags($id))]])[0] ?? null;
+        return $this->select("SELECT * FROM $this->db_table WHERE id = :id", [[':id', $id]])[0] ?? null;
     }
 
     /** 
@@ -83,6 +82,6 @@ class Query extends Database
      */
     public function delete($id)
     {
-        return $this->sql_exec("DELETE FROM $this->db_table WHERE id = :id", [[":id", htmlspecialchars(strip_tags($id))]]);
+        return $this->sql_exec("DELETE FROM $this->db_table WHERE id = :id", [[':id', $id]]);
     }
 }

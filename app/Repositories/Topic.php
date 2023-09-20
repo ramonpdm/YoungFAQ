@@ -30,7 +30,7 @@ class Topic extends Query
      */
     public function findTopicsByCreator($id_user, $limit = [])
     {
-        return $this->select("SELECT * FROM $this->db_table WHERE created_by = :id_user", [[":id_user", htmlspecialchars(strip_tags($id_user))]], $limit);
+        return $this->select("SELECT * FROM $this->db_table WHERE created_by = :id_user", [[':id_user', $id_user]], $limit);
     }
 
     /** 
